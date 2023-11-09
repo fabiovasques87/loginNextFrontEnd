@@ -52,6 +52,24 @@
 }
 
 
+.btn {
+    opacity: 0.5;
+    color: #000;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 10px;
+    margin-top: 15px;
+    width: 50%;
+    font-size: 16px;
+}
+
+
+.btn:hover{
+    background-color: #000;
+    color: #FFF;
+}
+
+
 @media (max-width: 700px){
     
     .container form input{

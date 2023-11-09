@@ -11,14 +11,35 @@ import jwt from 'jsonwebtoken';
 
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importe o Bootstrap CSS
 import { Spinner } from 'react-bootstrap';
-
+import { Button, Modal } from 'react-bootstrap';
 
 const index = () => {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [funcaoId, setFuncaoId] = useState('');
+
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const [show, setShow] = useState(false);
+
+
+  const [showModal, setShowModal] = useState(false);
+
   const [loading, setLoading] = useState(false);
 
+
+
+      const handleShow = () => {
+        console.log('Showing modal');
+        setShowModal(true);
+      };
+
+      const handleClose = () => {
+        console.log('Closing modal');
+        setShowModal(false);
+      };
 
     const router = useRouter();
     const [contentVisible, setContentVisible] = useState(false);
@@ -59,6 +80,57 @@ const index = () => {
         }
       }, []);
 
+
+      const handleCad = async () => {
+
+
+        try {
+
+          // await new Promise((resolve) => setTimeout(resolve, 1000));
+
+          setErrorMessage('');
+          setSuccessMessage('');
+
+          const response = await fetch('http://localhost:7000/cadastrar-usuario', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, password }),
+          });
+    
+          if (response.ok) {
+            const data = await response.json();
+            console.log('Usuário cadastrado:', data.user);
+            console.log("Cadastrado com sucesso!");
+
+             // Resetar os campos do formulário
+              setUsername('');
+              setPassword('');
+              setFuncaoId('');
+
+              // Exibir modal de sucesso
+            setSuccessMessage('Usuário cadastrado com sucesso!');
+            handleShow();
+
+            
+          } else {
+            // console.error('Erro ao cadastrar usuário');
+            // alert("Erro ao cadastrar usuário");
+            const errorData = await response.json();
+            setErrorMessage(errorData.error);
+
+            // Exibir modal de erro
+            handleShow();
+          }
+        } catch (error) {
+          console.error('Erro ao cadastrar usuário', error);
+        }
+      };
+
+      
+      
+
     return (
 
        
@@ -67,12 +139,27 @@ const index = () => {
 
           <Header />
             
-            {contentVisible && (
                 <>
                     {/* Seu conteúdo da página de cadastros */}
 
 
                     <h1 className={styles.title}>CADASTRAR USUÁRIOS</h1>
+                    
+                       {/* Exibir o modal em caso de sucesso ou erro */}
+                      {(successMessage || errorMessage) && (
+                        <Modal show={showModal} onHide={handleClose}>
+                          <Modal.Header closeButton>
+                            <Modal.Title>{successMessage ? 'Sucesso!' : 'Erro!'}</Modal.Title>
+                          </Modal.Header>
+                          <Modal.Body>{successMessage || errorMessage}</Modal.Body>
+                          <Modal.Footer>
+                            <Button variant="secondary" onClick={handleClose}>
+                              Fechar
+                            </Button>
+                          </Modal.Footer>
+                        </Modal>
+                      )}
+                    
                       <form>
                     <input
                         type="text"
@@ -99,18 +186,25 @@ const index = () => {
 
                     </fieldset>
 
-                    <BotForm />
+                    {/* <BotForm /> */}
+                    <button type="button" className={styles.btn} onClick={handleCad}>Cadastrar</button>
+
+                    {/* <button  onClick={handleCad} disabled={loading} className={styles.btn} >
+                      {loading ? 'Carregando...' : 'Login'} 
+                  </button> */}
                   
-                    {loading && (
+                    {/* {loading && (
                         <Spinner animation="border" role="status">
                             <span className="visually-hidden">Carregando...</span>
                         </Spinner>
-                )}
+                     )} */}
 
                 </form>
 
+
+                    
+
                 </>
-            )}
             
             
         </div>
