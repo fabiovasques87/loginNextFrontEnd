@@ -1,0 +1,25 @@
+
+.container{
+    
+    width: 100%;
+    max-width: 900px;
+    margin: auto;
+    background-color: #EEE;
+    padding: 20px;
+
+}
+
+.container ul li {
+    list-style: none;
+}
+
+.container a{
+    text-decoration: none;
+    color: #000;
+}
+
+.container a:hover{
+    color:blue;
+    border: 2px solid #ccc;
+    padding: 5px;
+}
