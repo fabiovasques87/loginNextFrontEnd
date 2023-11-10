@@ -122,12 +122,17 @@ const index = () => {
           setErrorMessage('');
           setSuccessMessage('');
 
+          // Obtenha o valor do campo select como uma string
+          const funcaoIdString = funcaoId.toString();
+
+          console.log('funcaoId antes da chamada fetch:', funcaoId);
+
           const response = await fetch('http://192.168.0.104:7000/cadastrar-usuario', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ username, password }),
+            body: JSON.stringify({ username, password,funcaoId: funcaoIdString}),
           });
     
           if (response.ok) {
@@ -209,11 +214,18 @@ const index = () => {
                     <fieldset>
 
                       <legend>Perfil</legend>
-                        <select className={styles.select}>
-                          <option>ADM</option>
-                          <option>USUÁRIO</option>
+                        
+                      <select
+                        className={styles.select}
+                        onChange={(e) => setFuncaoId(e.target.value)}
+                        value={funcaoId}
+                      >
+                        <option>Selecionar</option>
+                        <option value={1}>ADM</option>
+                        <option value={2}>USUÁRIO</option>
+                      </select>
 
-                        </select>
+                        {/* <input type='tetxt' value="1"/> */}
 
                     </fieldset>
 

@@ -13,6 +13,9 @@
     font-size: 22px;
     font-weight: 600;
     margin-bottom: 30px;
+    text-align: center;
+    border-bottom: 2px solid red;
+    
 }
 
 
@@ -93,6 +96,9 @@
     .container fieldset{
         width: 100%;
  
+    }
+    .btn{
+        width: 100%;
     }
   
 }
