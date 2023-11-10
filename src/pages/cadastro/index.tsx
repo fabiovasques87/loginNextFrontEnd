@@ -114,8 +114,18 @@ const index = () => {
 
       const handleCad = async () => {
 
+       
 
         try {
+
+          if (!funcaoId) {
+            // Se funcaoId não foi selecionado, exiba uma mensagem de erro ou tome a ação apropriada
+            setErrorMessage("Escolha um perfil, usuário ou ADM...");
+
+            // Exibir modal de erro
+            handleShow();
+            return;
+          }
 
           // await new Promise((resolve) => setTimeout(resolve, 1000));
 
@@ -149,6 +159,11 @@ const index = () => {
             setSuccessMessage('Usuário cadastrado com sucesso!');
             handleShow();
 
+            setTimeout(() => {
+              router.reload();
+            }, "5000");
+            
+
             
           } else {
             // console.error('Erro ao cadastrar usuário');
@@ -159,6 +174,7 @@ const index = () => {
             // Exibir modal de erro
             handleShow();
           }
+          //recarrega a página após o cadastro do usuário
         } catch (error) {
           console.error('Erro ao cadastrar usuário', error);
         }
