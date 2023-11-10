@@ -68,6 +68,20 @@
     background-color: #000;
     color: #FFF;
 }
+.tableAcoes{
+    text-align: center;
+}
+
+
+.link{
+    color: #000;
+    text-decoration: none;
+}
+
+.link:hover {
+  border-top: 2px solid red;
+  
+}
 
 
 @media (max-width: 700px){

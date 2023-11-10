@@ -11,7 +11,8 @@ import jwt from 'jsonwebtoken';
 
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importe o Bootstrap CSS
 import { Spinner } from 'react-bootstrap';
-import { Button, Modal } from 'react-bootstrap';
+import { Button, Modal, Table } from 'react-bootstrap';
+import Link from 'next/link';
 
 const index = () => {
 
@@ -28,6 +29,8 @@ const index = () => {
   const [showModal, setShowModal] = useState(false);
 
   const [loading, setLoading] = useState(false);
+
+  const [usuarios, setUsuarios] = useState<Usuario[]>([]);
 
 
 
@@ -80,6 +83,34 @@ const index = () => {
         }
       }, []);
 
+      //tipagem para buscar usuarios do banco
+
+
+      type Usuario = {
+        id: number;
+        username: string;
+        userFuncao: { funcao: { nome: string } }[];
+      };
+
+//Buscando users do banco...
+      useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const response = await fetch('http://192.168.0.104:7000/users');
+            if (response.ok) {
+              const data = await response.json();
+              setUsuarios(data);
+            } else {
+              console.error('Erro ao obter usuários', response.statusText);
+            }
+          } catch (error) {
+            console.error('Erro ao obter usuários', error);
+          }
+        };
+    
+        fetchData();
+      }, []);
+
 
       const handleCad = async () => {
 
@@ -91,7 +122,7 @@ const index = () => {
           setErrorMessage('');
           setSuccessMessage('');
 
-          const response = await fetch('http://localhost:7000/cadastrar-usuario', {
+          const response = await fetch('http://192.168.0.104:7000/cadastrar-usuario', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -200,12 +231,29 @@ const index = () => {
                      )} */}
 
                 </form>
-
-
-                    
-
                 </>
-            
+
+                <Table responsive="lg">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Privilégio</th>
+            <th colSpan={2} className={styles.tableAcoes}>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {usuarios.map((usuario) => (
+            <tr key={usuario.id}>
+              <td>{usuario.username}</td>
+              <td>{usuario.userFuncao[0]?.funcao.nome || 'Sem nível de acesso'}</td>
+              {/* <Link href={editar}><td >Editar</td> </Link> */}
+              <td><Link href={'editar'} className={styles.link}>Editar</Link></td>
+              <td><Link href={'excluir'} className={styles.link}>Excluir</Link></td>
+            </tr>
+          ))}
+        </tbody>
+       
+      </Table>
             
         </div>
     );
