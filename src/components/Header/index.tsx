@@ -15,7 +15,7 @@ export const Header = () => {
         localStorage.removeItem('token');
         alert('Faça login novamente!!!');
         // Redirecione o usuário para a página de login ou outra página de sua escolha
-        router.push('/login'); // Certifique-se de importar a função 'useRouter' do 'next/router'.
+        router.push('/'); // Certifique-se de importar a função 'useRouter' do 'next/router'.
     };
 
    
@@ -24,14 +24,10 @@ export const Header = () => {
         <div className={styles.container}>
 
                 <p>Logo</p>
-
-
+                
                 {/* <button onClick={handleLogout}>Logout</button>  */}
                 <BotLogout  label='Logout...' onClick={handleLogout}  />
-
-            
-           
-        
+   
 
         </div>
 

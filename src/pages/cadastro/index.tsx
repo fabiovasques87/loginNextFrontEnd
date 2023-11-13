@@ -26,22 +26,117 @@ const index = () => {
   const [show, setShow] = useState(false);
 
 
-  const [showModal, setShowModal] = useState(false);
+  const [showModalGeral, setShowModalGeral] = useState(false);
+  const [showModalEditar, setShowModalEditar] = useState(false);
+
 
   const [loading, setLoading] = useState(false);
 
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
 
+  const [selectedFuncaoId, setSelectedFuncaoId] = useState<string>('');
 
 
-      const handleShow = () => {
+    //estado para editar usuário
+    const [selectedUser, setSelectedUser] = useState<Usuario | null>(null);
+    const [selectedPrivilege, setSelectedPrivilege] = useState('');
+
+    // Função para atualizar o estado do usuário
+      const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSelectedUser((prevUser) => ({
+          ...prevUser!,
+          username: e.target.value,
+        }));
+      };
+
+      //atualiza o select com o valor do privilégio
+      const handleFuncaoChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedFuncaoId(e.target.value);
+      }       
+  
+
+      //funcao para atualizar o estado do campo select com o privilégio do usuário
+      // const handleChangeFuncao =() => {
+      //   selectedPrivilege((prevUser) => ({
+      //     ...prevUser!,
+      //     funcao: e.target.value,
+      //   }));
+      // }
+
+
+    
+    
+      // const handleCloseModal = () => {
+      //   setShowModal(false);
+      // };
+
+
+    //editar usuário selecionado
+      // Função para abrir o modal e definir o usuário selecionado
+  const handleEditClick = (user: Usuario) => {
+    setSelectedUser(user);
+
+    // Use o valor da função do usuário ou uma string vazia se não houver função.
+    setSelectedFuncaoId(user.userFuncao[0]?.funcao.id.toString() || '');
+
+    setShowModalEditar(true);
+  };
+
+  // Função para fechar o modal
+  const handleCloseModal = () => {
+    setSelectedUser(null);
+    setShowModalEditar(false);
+  };
+
+      const handleShowGeral = () => {
         console.log('Showing modal');
-        setShowModal(true);
+        setShowModalGeral(true);
       };
 
       const handleClose = () => {
         console.log('Closing modal');
-        setShowModal(false);
+        setShowModalGeral(false);
+      };
+
+       // Função para fechar o modal Editar
+  const handleCloseModalEditar = () => {
+    setSelectedUser(null);
+    setShowModalEditar(false);
+  };
+
+
+    //Funçã para consumir a API de update do usuário
+
+      const handleSave = async () => {
+        try {
+          const response = await fetch(`http://192.168.0.104:7000/atualizar-usuario/${selectedUser.id}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            // body: JSON.stringify({ funcaoId: parseInt(selectedPrivilege) }),
+            body: JSON.stringify({ funcaoId: parseInt(selectedFuncaoId)}),
+
+          });
+    
+          if (response.ok) {
+            const data = await response.json();
+            setSuccessMessage('Usuário calterado com sucesso');
+            handleShowGeral();
+    
+            // Atualizar localmente os dados do usuário, se necessário
+            // Ex: dispatch({ type: 'UPDATE_USER', payload: data.user });
+    
+            // Fechar o modal após a atualização
+            // onClose();
+          } else {
+            console.error('Erro ao atualizar usuário:', response.statusText);
+            setErrorMessage('Erro ao atualizar usuário!');
+            handleShowGeral();
+          }
+        } catch (error) {
+          console.error('Erro na requisição de atualização:', error);
+        }
       };
 
     const router = useRouter();
@@ -85,11 +180,19 @@ const index = () => {
 
       //tipagem para buscar usuarios do banco
 
+      // Interface para representar o objeto do usuário
+
+
 
       type Usuario = {
         id: number;
         username: string;
-        userFuncao: { funcao: { nome: string } }[];
+        userFuncao: { 
+          funcao: {
+             id: number;
+             nome: string ;
+            }
+           }[];
       };
 
 //Buscando users do banco...
@@ -123,7 +226,7 @@ const index = () => {
             setErrorMessage("Escolha um perfil, usuário ou ADM...");
 
             // Exibir modal de erro
-            handleShow();
+            handleShowGeral();
             return;
           }
 
@@ -157,7 +260,7 @@ const index = () => {
 
               // Exibir modal de sucesso
             setSuccessMessage('Usuário cadastrado com sucesso!');
-            handleShow();
+            handleShowGeral();
 
             setTimeout(() => {
               router.reload();
@@ -172,7 +275,7 @@ const index = () => {
             setErrorMessage(errorData.error);
 
             // Exibir modal de erro
-            handleShow();
+            handleShowGeral();
           }
           //recarrega a página após o cadastro do usuário
         } catch (error) {
@@ -199,7 +302,7 @@ const index = () => {
                     
                        {/* Exibir o modal em caso de sucesso ou erro */}
                       {(successMessage || errorMessage) && (
-                        <Modal show={showModal} onHide={handleClose}>
+                        <Modal show={showModalGeral} onHide={handleClose}>
                           <Modal.Header closeButton>
                             <Modal.Title>{successMessage ? 'Sucesso!' : 'Erro!'}</Modal.Title>
                           </Modal.Header>
@@ -275,14 +378,56 @@ const index = () => {
               <td>{usuario.username}</td>
               <td>{usuario.userFuncao[0]?.funcao.nome || 'Sem nível de acesso'}</td>
               {/* <Link href={editar}><td >Editar</td> </Link> */}
-              <td><Link href={'editar'} className={styles.link}>Editar</Link></td>
-              <td><Link href={'excluir'} className={styles.link}>Excluir</Link></td>
+              {/* <td><Link href={'editar'} className={styles.link}>Editar</Link></td> */}
+              <td> <button   className='btn btn-success' onClick={() => handleEditClick(usuario)}>Editar</button></td>
+              <td> <button   className='btn btn-danger' onClick={() => handleEditClick(usuario)}>Excluir</button></td>
+
             </tr>
           ))}
         </tbody>
        
       </Table>
+
+          {/* Modal de edição */}
+          <Modal show={showModalEditar} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Editar Usuário</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {/* Renderize o formulário de edição aqui, utilizando o estado selectedUser */}
+          {selectedUser && (
+            <form className={styles.formModalEditarUsuario}>
+              <label>Nome:</label>
+              <input
+                type="text"
+                value={selectedUser?.username || ''}
+                onChange={handleUsernameChange} readOnly
+              /><br />
+              <label>Nova Senha</label>
+              <input type='password' />
+               <label>Privilégio:</label>
+               <select
+                  className={styles.select}
+                  value={selectedFuncaoId}
+                  onChange={handleFuncaoChange}                
+                >
+                  <option>Selecionar</option>
+                  <option value={1}>ADM</option>
+                  <option value={2}>USER</option>
+                </select><br />
+            {/* <input
+              type="text"
+              value={selectedUser.userFuncao[0]?.funcao.nome || 'Sem nível de acesso'}
+            /><br /> */}
+              {/* Adicione campos adicionais conforme necessário */}
+              <button className='btn btn-success w-100 '  onClick={handleSave}>Salvar</button>
+            </form>
+          )}
+        </Modal.Body>
+      </Modal>
             
+            
+
         </div>
     );
 }
