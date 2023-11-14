@@ -1,5 +1,6 @@
 
-
+import { UserProvider } from '../../contexts/UserContext';
+import { useUser } from '../../contexts/UserContext';
 
 import React, {useState} from 'react';
 import { useRouter } from 'next/router';
@@ -13,7 +14,11 @@ import { Spinner } from 'react-bootstrap';
 
 const Login = () => {
 
-    const router = useRouter();
+  const router = useRouter();
+
+
+
+  const { setUser } = useUser(); // Use useUser para acessar o contexto do usuário
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -42,9 +47,13 @@ const Login = () => {
         const { token } = data;
        // Armazene o token no localStorage
        localStorage.setItem('token', token);
-
-
-
+        // console.log("user logado:", username);
+          // Utilize as informações reais do usuário recebidas do servidor
+          setUser({
+            username: username,
+            role: data.role,
+            // Outras informações do usuário, se necessário
+          });      
 
         // Redirecione o usuário para a página de dashboard com o token
         router.push('/dashboard');
@@ -66,6 +75,9 @@ const Login = () => {
 
 
     return (
+
+
+      <UserProvider>
         <div  className={styles.container}>
 
           
@@ -98,7 +110,11 @@ const Login = () => {
 
         </form>
 
+
   </div>
+
+  </UserProvider>
+
     );
 
 }

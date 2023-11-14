@@ -1,4 +1,5 @@
 
+import { useUser } from "../../../contexts/UserContext";
 
 import Router from "next/router";
 
@@ -8,7 +9,9 @@ import {BotLogout} from '../BotLogout'
 
 const router = Router;
 
-export const Header = () => {
+export const Header : React.FC  = () => {
+
+    const { user } = useUser();
 
     const handleLogout = () => {
         // Remova o token do armazenamento local
@@ -24,7 +27,13 @@ export const Header = () => {
         <div className={styles.container}>
 
                 <p>Logo</p>
-                
+
+                {/* Seu código de cabeçalho */}
+                <p>{user ? `Bem Vindo: ${user.username}` : 'Nenhum usuário logado'}</p>
+                {/* Outros elementos do cabeçalho */}
+
+
+
                 {/* <button onClick={handleLogout}>Logout</button>  */}
                 <BotLogout  label='Logout...' onClick={handleLogout}  />
    
