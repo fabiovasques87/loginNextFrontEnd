@@ -16,13 +16,7 @@ const router = Router;
 
 function NavBar() {
 
-    const handleLogout = () => {
-        // Remova o token do armazenamento local
-        localStorage.removeItem('token');
-        alert('Faça login novamente!!!');
-        // Redirecione o usuário para a página de login ou outra página de sua escolha
-        router.push('/'); // Certifique-se de importar a função 'useRouter' do 'next/router'.
-    };
+
 
   return (
     <Navbar expand="lg" className="">
@@ -35,8 +29,16 @@ function NavBar() {
             navbarScroll
           >
             <Nav.Link href="/dashboard">Home</Nav.Link>
-            <Nav.Link href="#action2"> {/* <button onClick={handleLogout}>Logout</button>  */}
-                <BotLogout  label='Logout...' onClick={handleLogout}  /></Nav.Link>
+            <Nav.Link href="/cadastro">Cadastrar usuários</Nav.Link>
+            <NavDropdown title="Estoque" id="navbarScrollingDropdown">
+              <NavDropdown.Item href="#action3">Entrada</NavDropdown.Item>
+              <NavDropdown.Item href="#action4">
+                Saída
+              </NavDropdown.Item>
+            </NavDropdown>
+            <Nav.Link href="/sobre">Sobre</Nav.Link>
+
+
           </Nav>
         </Navbar.Collapse>
       </Container>

@@ -131,14 +131,14 @@ const Dashboard = () => {
 
             <p>página Dashboard</p>
 
-            <ul>
+            {/* <ul>
                 <li> <Link href="/cadastro">Cadastrar usuários</Link></li>
                 <li> <Link href="/relatorio">Pàgina de relatórioss</Link></li>
                 <li> <Link href="/consulta">Pàgina de consultas</Link></li>
                 <li> <Link href="/sobre">Sobre</Link></li>
 
             </ul>
-
+ */}
 
         </div>
     );
