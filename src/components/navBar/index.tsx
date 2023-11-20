@@ -30,12 +30,17 @@ function NavBar() {
           >
             <Nav.Link href="/dashboard">Home</Nav.Link>
             <Nav.Link href="/cadastro">Cadastrar usuários</Nav.Link>
+            <NavDropdown title="Produtos" id="navbarScrollingDropdown">
+              <NavDropdown.Item href="#action3">Adicionar</NavDropdown.Item>
+            </NavDropdown>
+            
             <NavDropdown title="Estoque" id="navbarScrollingDropdown">
               <NavDropdown.Item href="#action3">Entrada</NavDropdown.Item>
               <NavDropdown.Item href="#action4">
                 Saída
               </NavDropdown.Item>
             </NavDropdown>
+           
             <Nav.Link href="/sobre">Sobre</Nav.Link>
 
 

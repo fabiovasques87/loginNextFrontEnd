@@ -2,7 +2,16 @@
 .btn {
     opacity: 0.3;
     color: #000;
-    padding: 5px;
-    font-size: 14px;
-    border-radius: 10px;
+    padding: 10px;
+    font-size: 18px;
+    border: 0;
 }
+
+
+@media(max-width:760px){
+   .btn {
+    font-size: 14px;
+   } 
+}
+
+

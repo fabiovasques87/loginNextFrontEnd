@@ -2,8 +2,6 @@
 .container{
     
     width: 100%;
-    max-width: 900px;
-    margin: auto;
     background-color: #EEE;
     padding: 20px;
 
@@ -14,7 +12,7 @@
     font-weight: 600;
     margin-bottom: 30px;
     text-align: center;
-    border-bottom: 2px solid red;
+    border-bottom: 2px solid #DDD;
     
 }
 
@@ -29,15 +27,15 @@
 }
 
 .container form input{
-    width: 50%;
+    width: 30%;
     margin: 2px;
     padding: 10px;
     outline: 0;
 }
 
 .container fieldset{
-    width: 50%;
-    border: 1px solid red;
+    width: 30%;
+    border: 1px solid #DDD;
     margin-top: 20px;
     padding: 10px;
 }
@@ -62,7 +60,7 @@
     font-size: 14px;
     border-radius: 10px;
     margin-top: 15px;
-    width: 50%;
+    width: 30%;
     font-size: 16px;
 }
 
@@ -99,6 +97,24 @@
     width: 100%;
     margin-bottom: 20px;
     outline: none;
+}
+
+.table{
+    max-width: 900px;
+    margin: auto;
+}
+
+/*ICones */
+
+.IconTrash{
+    font-size: 26px;
+    color: red;
+    cursor: pointer;
+}
+.IconEdit{
+    font-size: 26px;
+    color: #2E8B57;
+    cursor: pointer;
 }
 
 

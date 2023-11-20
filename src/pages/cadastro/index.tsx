@@ -7,6 +7,11 @@ import { Header } from '@/components/Header';
 import { useEffect, useState} from "react";
 import { useRouter } from 'next/router';
 
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+
 import jwt from 'jsonwebtoken';
 
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importe o Bootstrap CSS
@@ -109,7 +114,7 @@ const index = () => {
 
       const handleSave = async () => {
         try {
-          const response = await fetch(`http://192.168.0.104:7000/atualizar-usuario/${selectedUser.id}`, {
+          const response = await fetch(`http://192.168.0.104:7000/users/atualizar-usuario/${selectedUser.id}`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
@@ -199,7 +204,7 @@ const index = () => {
       useEffect(() => {
         const fetchData = async () => {
           try {
-            const response = await fetch('http://192.168.0.104:7000/users');
+            const response = await fetch('http://192.168.0.104:7000/users/users');
             if (response.ok) {
               const data = await response.json();
               setUsuarios(data);
@@ -240,7 +245,7 @@ const index = () => {
 
           console.log('funcaoId antes da chamada fetch:', funcaoId);
 
-          const response = await fetch('http://192.168.0.104:7000/cadastrar-usuario', {
+          const response = await fetch('http://192.168.0.104:7000/users/cadastro', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -264,7 +269,7 @@ const index = () => {
 
             setTimeout(() => {
               router.reload();
-            }, "5000");
+            }, "2000");
             
 
             
@@ -283,7 +288,48 @@ const index = () => {
         }
       };
 
+
+
+      // funcao para exclusao de registros:
+      const handleExcluir = async (usuario : Usuario) => {
+        try {
+          const response = await fetch(`http://192.168.0.104:7000/users/excluir/${usuario.id}`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+              // Se necessário, adicione cabeçalhos de autenticação aqui (token, etc.)
+            },
+          });
       
+          if (response.ok) {
+            console.log('Usuário excluído com sucesso!');
+            setSuccessMessage('Usuário Excluído com sucesso!');
+            handleShowGeral();
+
+            setTimeout(() => {
+              router.reload();
+            }, "1000");
+            
+
+            // Atualize o estado ou realize outras ações necessárias após a exclusão bem-sucedida
+          } else {
+            const errorData = await response.json();
+            console.error(`Erro ao excluir usuário: ${errorData.error}`);
+            // Lide com o erro, mostre uma mensagem de erro, etc.
+          }
+        } catch (error) {
+          console.error('Erro na requisição de exclusão:', error.message);
+          setErrorMessage("Escolha um perfil, usuário ou ADM...");
+
+          // Exibir modal com msgem de erro
+          handleShowGeral();
+
+
+
+
+          // Lide com o erro, mostre uma mensagem de erro, etc.
+        }
+      };
       
 
     return (
@@ -364,7 +410,7 @@ const index = () => {
                 </form>
                 </>
 
-                <Table responsive="lg">
+                <Table responsive="lg" className={styles.table}>
         <thead>
           <tr>
             <th>Nome</th>
@@ -376,11 +422,13 @@ const index = () => {
           {usuarios.map((usuario) => (
             <tr key={usuario.id}>
               <td>{usuario.username}</td>
-              <td>{usuario.userFuncao[0]?.funcao.nome || 'Sem nível de acesso'}</td>
-              {/* <Link href={editar}><td >Editar</td> </Link> */}
-              {/* <td><Link href={'editar'} className={styles.link}>Editar</Link></td> */}
-              <td> <button   className='btn btn-success' onClick={() => handleEditClick(usuario)}>Editar</button></td>
-              <td> <button   className='btn btn-danger' onClick={() => handleEditClick(usuario)}>Excluir</button></td>
+                <td>{usuario.userFuncao[0]?.funcao.nome || 'Sem nível de acesso'}</td>
+                {/* <Link href={editar}><td >Editar</td> </Link> */}
+                {/* <td><Link href={'editar'} className={styles.link}>Editar</Link></td> */}
+                {/* <td> <button   className='btn btn-success' onClick={() => handleEditClick(usuario)}>Editar</button></td> */}
+                {/* <td> <button   className='btn btn-danger' onClick={() => handleEditClick(usuario)}>Excluir</button></td> */}
+                <td><FontAwesomeIcon icon={faPenToSquare} onClick={() => handleEditClick(usuario)} className={styles.IconEdit}/></td>
+                <td><FontAwesomeIcon icon={faTrash}  className={styles.IconTrash} onClick={() => handleExcluir (usuario)}/></td>
 
             </tr>
           ))}
@@ -425,7 +473,6 @@ const index = () => {
           )}
         </Modal.Body>
       </Modal>
-            
             
 
         </div>

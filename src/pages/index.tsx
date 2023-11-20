@@ -33,7 +33,7 @@ const Login = () => {
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
       // Faça uma solicitação para o servidor Node.js para autenticação
-      const response = await fetch('http://192.168.0.104:7000/login', {
+      const response = await fetch('http://192.168.0.104:7000/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -123,13 +123,12 @@ const Dashboard = () => {
 
 
     return (
-        <div className={styles.container}>
+        <div className={styles.containerPai}>
 
-    
+        
             
             <Header />
 
-            <p>página Dashboard</p>
 
             {/* <ul>
                 <li> <Link href="/cadastro">Cadastrar usuários</Link></li>
@@ -139,6 +138,48 @@ const Dashboard = () => {
 
             </ul>
  */}
+
+
+        <div className={styles.containerFilho}>
+
+                
+                <div className={styles.containerCard}>
+                    <div className={styles.title}>Faturamento Dia </div>
+                        <div className={styles.body}>
+                            <p>R$ 0,00</p>
+                        </div>
+                </div>
+
+                <div className={styles.containerCard}>
+                    <div className={styles.title}>Faturamento mês </div>
+                        <div className={styles.body}>
+                            <p>R$ 0,00</p>
+                        </div>
+                </div>
+                
+                <div className={styles.containerCard}>
+                    <div className={styles.title}>Produtos a vencer</div>
+                        <div className={styles.body}>
+                            <p></p>
+                        </div>
+                </div>
+
+                {/* <div className={styles.containerCard}>
+                    <div className={styles.title}>Produtos a vencidos</div>
+                        <div className={styles.body}>
+                            <p></p>
+                        </div>
+                </div> */}
+
+                <div className={styles.containerCard}>
+                    <div className={styles.title}>PDV </div>
+                        <div className={styles.body}>
+                            <p></p>
+                        </div>
+                </div>
+
+
+        </div>
 
         </div>
     );

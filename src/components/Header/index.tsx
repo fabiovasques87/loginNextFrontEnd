@@ -28,13 +28,12 @@ export const Header : React.FC  = () => {
     return (
         <div className={styles.container}>
 
-                <p>Logo</p>
 
                 <NavBar />
 
 
                 {/* Seu código de cabeçalho */}
-                <p>{user ? `Bem Vindo: ${user.username}` : 'Nenhum usuário logado'}</p>
+                <p className={styles.title}> {user ? `Bem Vindo: ${user.username}` : 'Nenhum usuário logado'}</p>
                 {/* Outros elementos do cabeçalho */}
 
 
