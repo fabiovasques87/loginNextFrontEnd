@@ -8,6 +8,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 
 import Router from "next/router";
 
+import styles from './navBar.module.css'
 
 import { BotLogout } from '../BotLogout';
 
@@ -19,29 +20,30 @@ function NavBar() {
 
 
   return (
-    <Navbar expand="lg" className="">
+    <Navbar expand="lg">
       <Container fluid>
-        <Navbar.Toggle aria-controls="navbarScroll" />
-        <Navbar.Collapse id="navbarScroll">
+        <Navbar.Toggle aria-controls="navbarScroll" style={{ color: '#FFF' }} />
+        <Navbar.Collapse id="navbarScroll" style={{ color: '#FFF' }}>
           <Nav
             className="me-auto my-2 my-lg-0"
-            style={{ maxHeight: '100px' }}
+            style={{ maxHeight: '100px', color: '#FFF' }}
             navbarScroll
           >
-            <Nav.Link href="/dashboard">Home</Nav.Link>
-            <Nav.Link href="/cadastro">Cadastrar usuários</Nav.Link>
-            <NavDropdown title="Produtos" id="navbarScrollingDropdown">
-              <NavDropdown.Item href="#action3">Adicionar</NavDropdown.Item>
+            <Nav.Link href="/dashboard" className={styles.container} style={{ color: '#FFF' }} >Home</Nav.Link>
+
+            <Nav.Link href="/cadastro"  className={styles.container} style={{ color: '#FFF' }}>Cadastrar usuários</Nav.Link>
+            <NavDropdown  title="Produtos" style={{color: 'red'}} id="navbarScrollingDropdown">
+              <NavDropdown.Item href="#action3" >Adicionar</NavDropdown.Item>
             </NavDropdown>
             
-            <NavDropdown title="Estoque" id="navbarScrollingDropdown">
-              <NavDropdown.Item href="#action3">Entrada</NavDropdown.Item>
-              <NavDropdown.Item href="#action4">
+            <NavDropdown  title="Estoque" id="navbarScrollingDropdown" style={{ color: 'red' }}>
+              <NavDropdown.Item href="#action3"  className={styles.containerFilho}>Entrada</NavDropdown.Item>
+              <NavDropdown.Item href="#action4"  className={styles.containerFilho}>
                 Saída
               </NavDropdown.Item>
             </NavDropdown>
            
-            <Nav.Link href="/sobre">Sobre</Nav.Link>
+            <Nav.Link href="/sobre"  className={styles.container} style={{ color: '#FFF' }}>Sobre</Nav.Link >
 
 
           </Nav>

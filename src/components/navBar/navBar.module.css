@@ -1,0 +1,12 @@
+
+.container{
+   color: #FFF;
+}
+
+.containerFilho{
+    color: #000;
+}
+
+.custom-dropdown-item {
+    color: #ffcc00 !important; /* Cor do texto do dropdown item com !important */
+  }

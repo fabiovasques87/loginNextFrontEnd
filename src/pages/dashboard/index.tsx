@@ -130,15 +130,6 @@ const Dashboard = () => {
             <Header />
 
 
-            {/* <ul>
-                <li> <Link href="/cadastro">Cadastrar usuários</Link></li>
-                <li> <Link href="/relatorio">Pàgina de relatórioss</Link></li>
-                <li> <Link href="/consulta">Pàgina de consultas</Link></li>
-                <li> <Link href="/sobre">Sobre</Link></li>
-
-            </ul>
- */}
-
 
         <div className={styles.containerFilho}>
 
@@ -164,12 +155,7 @@ const Dashboard = () => {
                         </div>
                 </div>
 
-                {/* <div className={styles.containerCard}>
-                    <div className={styles.title}>Produtos a vencidos</div>
-                        <div className={styles.body}>
-                            <p></p>
-                        </div>
-                </div> */}
+              
 
                 <div className={styles.containerCard}>
                     <div className={styles.title}>PDV </div>
