@@ -48,6 +48,15 @@
 
 }
 
+.containerForm{
+    background-color: red;
+    width: 100%;
+    margin: auto;
+    background-color: #53ba83;
+    margin:50px;
+}
+
+
 .label{
     text-align: left;
 }
