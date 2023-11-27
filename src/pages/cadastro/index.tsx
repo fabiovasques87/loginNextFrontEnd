@@ -1,5 +1,8 @@
 
 import styles from './Cadastro.module.css';
+
+import CadUser from '@/components/modal/cadUser';
+
 import { BotForm } from '@/components/BotForm';
 
 import { Header } from '@/components/Header';
