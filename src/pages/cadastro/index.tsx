@@ -7,6 +7,7 @@ import { Header } from '@/components/Header';
 import { useEffect, useState} from "react";
 import { useRouter } from 'next/router';
 
+import apiUrl from '@/apiConfig';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -114,7 +115,7 @@ const index = () => {
 
       const handleSave = async () => {
         try {
-          const response = await fetch(`http://192.168.0.104:7000/users/atualizar-usuario/${selectedUser.id}`, {
+          const response = await fetch(`${apiUrl}/users/atualizar-usuario/${selectedUser.id}`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
@@ -204,7 +205,7 @@ const index = () => {
       useEffect(() => {
         const fetchData = async () => {
           try {
-            const response = await fetch('http://172.16.14.53:7000/users/users');
+            const response = await fetch(`${apiUrl}/users/users`);
             if (response.ok) {
               const data = await response.json();
               setUsuarios(data);
@@ -245,7 +246,7 @@ const index = () => {
 
           console.log('funcaoId antes da chamada fetch:', funcaoId);
 
-          const response = await fetch('http://192.168.0.104:7000/users/cadastro', {
+          const response = await fetch(`${apiUrl}/users/cadastro`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -293,7 +294,7 @@ const index = () => {
       // funcao para exclusao de registros:
       const handleExcluir = async (usuario : Usuario) => {
         try {
-          const response = await fetch(`http://192.168.0.104:7000/users/excluir/${usuario.id}`, {
+          const response = await fetch(`${apiUrl}/users/excluir/${usuario.id}`, {
             method: 'DELETE',
             headers: {
               'Content-Type': 'application/json',
