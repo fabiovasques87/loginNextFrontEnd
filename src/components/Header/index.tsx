@@ -1,11 +1,15 @@
 
 import { useUser } from "../../../contexts/UserContext";
 
+import {useState} from "react";
+
 import NavBar from "../navBar";
 
 import Router from "next/router";
 
 import styles from './Header.module.css'
+
+import ModalAviso from "../modal/aviso";
 
 import {BotLogout} from '../BotLogout'
 
@@ -14,16 +18,21 @@ const router = Router;
 export const Header : React.FC  = () => {
 
     const { user } = useUser();
+    const [showModal, setShowModal] = useState(false);
 
     const handleLogout = () => {
         // Remova o token do armazenamento local
         localStorage.removeItem('token');
-        alert('Faça login novamente!!!');
+        // Abra o modal
+        setShowModal(true);
+      };
+    
+      const handleCloseModal = () => {
+        // Feche o modal
+        setShowModal(false);
         // Redirecione o usuário para a página de login ou outra página de sua escolha
         router.push('/'); // Certifique-se de importar a função 'useRouter' do 'next/router'.
-    };
-
-   
+      };   
 
     return (
         <div className={styles.container}>
@@ -41,7 +50,8 @@ export const Header : React.FC  = () => {
                 {/* <button onClick={handleLogout}>Logout</button>  */}
                 <BotLogout  label='Logout...' onClick={handleLogout}  />
 
-   
+                {/* Componente ModalAviso */}
+                <ModalAviso showModal={showModal} handleCloseModal={handleCloseModal} />
 
         </div>
 

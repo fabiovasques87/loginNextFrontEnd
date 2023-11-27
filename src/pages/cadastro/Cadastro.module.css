@@ -24,6 +24,7 @@
     justify-content: center;
     align-items: center;
     margin-bottom: 30px;
+    padding:20px;
 }
 
 .container form input{
@@ -49,7 +50,7 @@
 }
 
 .containerForm{
-    background-color: #53ba83;
+    background-color: #ccc;
 }
 
 
@@ -137,6 +138,9 @@
         width: 100%;
     }
 
+    .container form{
+        padding: 0px;
+    }
 
    .containerForm{
     background-color: #FFF;
