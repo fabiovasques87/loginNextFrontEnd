@@ -48,6 +48,11 @@
 
 }
 
+.containerForm{
+    background-color: #53ba83;
+}
+
+
 .label{
     text-align: left;
 }
@@ -131,7 +136,11 @@
     .btn{
         width: 100%;
     }
-   
+
+
+   .containerForm{
+    background-color: #FFF;
+   }
      
 }
 

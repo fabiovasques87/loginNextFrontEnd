@@ -114,7 +114,7 @@ const index = () => {
 
       const handleSave = async () => {
         try {
-          const response = await fetch(`http://172.16.14.53:7000/users/atualizar-usuario/${selectedUser.id}`, {
+          const response = await fetch(`http://192.168.0.104:7000/users/atualizar-usuario/${selectedUser.id}`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
@@ -245,7 +245,7 @@ const index = () => {
 
           console.log('funcaoId antes da chamada fetch:', funcaoId);
 
-          const response = await fetch('http://172.16.14.53:7000/users/cadastro', {
+          const response = await fetch('http://192.168.0.104:7000/users/cadastro', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -293,7 +293,7 @@ const index = () => {
       // funcao para exclusao de registros:
       const handleExcluir = async (usuario : Usuario) => {
         try {
-          const response = await fetch(`http://172.16.14.53:7000/users/excluir/${usuario.id}`, {
+          const response = await fetch(`http://192.168.0.104:7000/users/excluir/${usuario.id}`, {
             method: 'DELETE',
             headers: {
               'Content-Type': 'application/json',
@@ -360,7 +360,7 @@ const index = () => {
                           </Modal.Footer>
                         </Modal>
                       )}
-                    
+               <div className={styles.containerForm}>
                       <form>
                     <input
                         type="text"
@@ -408,6 +408,7 @@ const index = () => {
                      )} */}
 
                 </form>
+            </div>
                 </>
 
                 <Table responsive="lg" className={styles.table}>
