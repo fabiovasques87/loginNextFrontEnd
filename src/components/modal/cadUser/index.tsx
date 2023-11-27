@@ -6,18 +6,18 @@ import {useState} from "react";
 
 
 interface CadUser {
-    showModalGeral: boolean;
+    showModal: boolean;
     handleClose: () => void;
-    successMessage: boolean;
-    errorMessage: boolean
+    successMessage: string;
+    errorMessage: string
   }
 
 
-const CadUser: React.FC<CadUser>  = ({ showModalGeral, handleClose,successMessage,errorMessage }) => {
+const CadUser: React.FC<CadUser>  = ({ showModal, handleClose,successMessage,errorMessage }) => {
     return ( 
 
         
-            <Modal show={showModalGeral} onHide={handleClose}>
+            <Modal show={showModal} onHide={handleClose}>
               <Modal.Header closeButton>
                 <Modal.Title>{successMessage ? 'Sucesso!' : 'Erro!'}</Modal.Title>
               </Modal.Header>

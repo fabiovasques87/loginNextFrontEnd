@@ -352,17 +352,7 @@ const index = () => {
                     
                        {/* Exibir o modal em caso de sucesso ou erro */}
                       {(successMessage || errorMessage) && (
-                        <Modal show={showModalGeral} onHide={handleClose}>
-                          <Modal.Header closeButton>
-                            <Modal.Title>{successMessage ? 'Sucesso!' : 'Erro!'}</Modal.Title>
-                          </Modal.Header>
-                          <Modal.Body>{successMessage || errorMessage}</Modal.Body>
-                          <Modal.Footer>
-                            <Button variant="secondary" onClick={handleClose}>
-                              Fechar
-                            </Button>
-                          </Modal.Footer>
-                        </Modal>
+                        <CadUser  showModal={showModalGeral} handleClose={handleClose} successMessage={successMessage} errorMessage={errorMessage} />
                       )}
                <div className={styles.containerForm}>
                       <form>
