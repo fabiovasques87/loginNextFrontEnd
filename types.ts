@@ -1,13 +1,15 @@
 
-// types.ts
 
-export interface User {
-    id?: number;
-    username: string;
-    role: string;
-    // Outras informações do usuário, se necessário
-  }
-
+type Usuario = {
+  id: number;
+  username: string;
+  userFuncao: { 
+    funcao: {
+       id: number;
+       nome: string ;
+      }
+     }[];
+};
   
 
   
