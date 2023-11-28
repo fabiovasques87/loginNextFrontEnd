@@ -21,6 +21,12 @@ interface ModalAvisoProps {
         <Modal.Body className={styles.bodyModal}>
             Faça login novamente!!!
         </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Fechar
+          </Button>
+        </Modal.Footer>
+
       </Modal>
     );
 }
