@@ -9,7 +9,7 @@ import Router from "next/router";
 
 import styles from './Header.module.css'
 
-import ModalAviso from "../modal/aviso";
+import ModalAviso from "../modal/logout";
 
 import {BotLogout} from '../BotLogout'
 

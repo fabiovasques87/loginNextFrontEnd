@@ -1,7 +1,7 @@
 
 import styles from './Cadastro.module.css';
 
-import CadUser from '@/components/modal/cadUser';
+import CadUser from '@/components/modal/msgGeral';
 
 import { BotForm } from '@/components/BotForm';
 
@@ -11,6 +11,8 @@ import { useEffect, useState} from "react";
 import { useRouter } from 'next/router';
 
 import apiUrl from '@/apiConfig';
+
+import EditUserModal from '@/components/modal/EditUserModal';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -130,7 +132,7 @@ const index = () => {
     
           if (response.ok) {
             const data = await response.json();
-            setSuccessMessage('Usuário calterado com sucesso');
+            setSuccessMessage('Usuário alterado com sucesso');
             handleShowGeral();
     
             // Atualizar localmente os dados do usuário, se necessário
@@ -269,6 +271,7 @@ const index = () => {
 
               // Exibir modal de sucesso
             setSuccessMessage('Usuário cadastrado com sucesso!');
+
             handleShowGeral();
 
             setTimeout(() => {
@@ -431,43 +434,16 @@ const index = () => {
        
       </Table>
 
-          {/* Modal de edição */}
-          <Modal show={showModalEditar} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Editar Usuário</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {/* Renderize o formulário de edição aqui, utilizando o estado selectedUser */}
-          {selectedUser && (
-            <form className={styles.formModalEditarUsuario}>
-              <label>Nome:</label>
-              <input
-                type="text"
-                value={selectedUser?.username || ''}
-                onChange={handleUsernameChange} readOnly
-              /><br />
-              <label>Nova Senha</label>
-              <input type='password' />
-               <label>Privilégio:</label>
-               <select
-                  className={styles.select}
-                  value={selectedFuncaoId}
-                  onChange={handleFuncaoChange}                
-                >
-                  <option>Selecionar</option>
-                  <option value={1}>ADM</option>
-                  <option value={2}>USER</option>
-                </select><br />
-            {/* <input
-              type="text"
-              value={selectedUser.userFuncao[0]?.funcao.nome || 'Sem nível de acesso'}
-            /><br /> */}
-              {/* Adicione campos adicionais conforme necessário */}
-              <button className='btn btn-success w-100 '  onClick={handleSave}>Salvar</button>
-            </form>
-          )}
-        </Modal.Body>
-      </Modal>
+            {/* Modal de edição */}
+            <EditUserModal
+              show={showModalEditar}
+              onClose={handleCloseModal}
+              onSave={handleSave}
+              selectedUser={selectedUser}
+              selectedFuncaoId={selectedFuncaoId}
+              handleUsernameChange={(e) => handleUsernameChange(e)}
+              handleFuncaoChange={(e) => handleFuncaoChange(e)}
+            />
             
 
         </div>
