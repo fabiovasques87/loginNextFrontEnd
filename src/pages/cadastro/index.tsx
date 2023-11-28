@@ -116,45 +116,7 @@ const index = () => {
   };
 
 
-    //Funçã para consumir a API de update do usuário
-
-      const handleSave = async () => {
-        try {
-          const response = await fetch(`${apiUrl}/users/atualizar-usuario/${selectedUser.id}`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            // body: JSON.stringify({ funcaoId: parseInt(selectedPrivilege) }),
-            body: JSON.stringify({ funcaoId: parseInt(selectedFuncaoId)}),
-
-          });
-    
-          if (response.ok) {
-            const data = await response.json();
-            setSuccessMessage('Usuário alterado com sucesso');
-            handleShowGeral();
-    
-            setTimeout(() => {
-              router.reload();
-            }, "2000");
-
-
-            // Atualizar localmente os dados do usuário, se necessário
-            // Ex: dispatch({ type: 'UPDATE_USER', payload: data.user });
-    
-            // Fechar o modal após a atualização
-            // onClose();
-          } else {
-            console.error('Erro ao atualizar usuário:', response.statusText);
-            setErrorMessage('Erro ao atualizar usuário!');
-            handleShowGeral();
-          }
-        } catch (error) {
-          console.error('Erro na requisição de atualização:', error);
-        }
-      };
-
+  
     const router = useRouter();
     const [contentVisible, setContentVisible] = useState(false);
 
@@ -210,6 +172,48 @@ const index = () => {
             }
            }[];
       };
+
+
+  //Funçã para consumir a API de update do usuário
+
+  const handleSave = async () => {
+    try {
+      const response = await fetch(`${apiUrl}/users/atualizar-usuario/${selectedUser.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // body: JSON.stringify({ funcaoId: parseInt(selectedPrivilege) }),
+        body: JSON.stringify({ funcaoId: parseInt(selectedFuncaoId)}),
+
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setSuccessMessage('Usuário alterado com sucesso');
+        handleShowGeral();
+
+        setTimeout(() => {
+          router.reload();
+        }, "2000");
+
+
+        // Atualizar localmente os dados do usuário, se necessário
+        // Ex: dispatch({ type: 'UPDATE_USER', payload: data.user });
+
+        // Fechar o modal após a atualização
+        // onClose();
+      } else {
+        console.error('Erro ao atualizar usuário:', response.statusText);
+        setErrorMessage('Erro ao atualizar usuário!');
+        handleShowGeral();
+      }
+    } catch (error) {
+      console.error('Erro na requisição de atualização:', error);
+    }
+  };
+
+
 
 //Buscando users do banco...
       useEffect(() => {
