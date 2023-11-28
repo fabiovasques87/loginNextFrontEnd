@@ -55,6 +55,11 @@
 
 @media(max-width: 760px){
 
+    .containerFilho{
+        display: flex;
+        flex-direction: column;
+    }
+
     .containerCard{
         width: 100%;
     }
