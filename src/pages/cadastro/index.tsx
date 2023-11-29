@@ -218,7 +218,19 @@ const index = () => {
   const handleCad = async () => {
     try {
       if (!funcaoId) {
-        setErrorMessage("Escolha um perfil, usuário ou ADM...");
+        setErrorMessage("Escolha um perfil, usuário ou ADM...");       
+        handleShowGeral();
+        return;
+      }
+
+      if (!username) {
+        setErrorMessage("Preencha o campo com o nome do usuário!");
+        handleShowGeral();
+        return;
+      }
+
+      if (!password) {
+        setErrorMessage("Preencha o campo com a senha!");
         handleShowGeral();
         return;
       }
