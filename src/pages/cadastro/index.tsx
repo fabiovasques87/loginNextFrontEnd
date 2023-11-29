@@ -70,22 +70,6 @@ const index = () => {
       }       
   
 
-      //funcao para atualizar o estado do campo select com o privilégio do usuário
-      // const handleChangeFuncao =() => {
-      //   selectedPrivilege((prevUser) => ({
-      //     ...prevUser!,
-      //     funcao: e.target.value,
-      //   }));
-      // }
-
-
-    
-    
-      // const handleCloseModal = () => {
-      //   setShowModal(false);
-      // };
-
-
     //editar usuário selecionado
       // Função para abrir o modal e definir o usuário selecionado
   const handleEditClick = (user: Usuario) => {
