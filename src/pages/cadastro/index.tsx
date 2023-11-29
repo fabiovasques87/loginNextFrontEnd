@@ -12,6 +12,10 @@ import { useRouter } from 'next/router';
 
 import apiUrl from '@/apiConfig';
 
+//chamando o arquivo de APIS
+
+import { updateUser, fetchUsers, cadastrarUsuario  } from '@/apiService';
+
 import EditUserModal from '@/components/modal/EditUserModal';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -173,136 +177,81 @@ const index = () => {
            }[];
       };
 
-
   //Funçã para consumir a API de update do usuário
 
-  const handleSave = async () => {
+      const handleSave = async () => {
+        try {
+          const data = await updateUser(selectedUser.id, parseInt(selectedFuncaoId));
+          setSuccessMessage('Usuário alterado com sucesso');
+          handleShowGeral();
+      
+          setTimeout(() => {
+            router.reload();
+          }, 2000);
+                
+          // Fechar o modal após a atualização
+        } catch (error) {
+          setErrorMessage('Erro ao atualizar usuário!');
+          handleShowGeral();
+        }
+      };
+
+
+//Buscando users do banco...
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchUsers();
+      if (data) {
+        setUsuarios(data);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  //cadastrar usuários
+
+  const handleCad = async () => {
     try {
-      const response = await fetch(`${apiUrl}/users/atualizar-usuario/${selectedUser.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        // body: JSON.stringify({ funcaoId: parseInt(selectedPrivilege) }),
-        body: JSON.stringify({ funcaoId: parseInt(selectedFuncaoId)}),
+      if (!funcaoId) {
+        setErrorMessage("Escolha um perfil, usuário ou ADM...");
+        handleShowGeral();
+        return;
+      }
 
-      });
+      setErrorMessage('');
+      setSuccessMessage('');
 
-      if (response.ok) {
-        const data = await response.json();
-        setSuccessMessage('Usuário alterado com sucesso');
+      const { success, user, error } = await cadastrarUsuario(username, password, funcaoId);
+
+      if (success) {
+        console.log('Usuário cadastrado:', user);
+        console.log('Cadastrado com sucesso!');
+
+        setUsername('');
+        setPassword('');
+        setFuncaoId('');
+
+        setSuccessMessage('Usuário cadastrado com sucesso!');
         handleShowGeral();
 
         setTimeout(() => {
           router.reload();
-        }, "2000");
-
-
-        // Atualizar localmente os dados do usuário, se necessário
-        // Ex: dispatch({ type: 'UPDATE_USER', payload: data.user });
-
-        // Fechar o modal após a atualização
-        // onClose();
+        }, 2000);
       } else {
-        console.error('Erro ao atualizar usuário:', response.statusText);
-        setErrorMessage('Erro ao atualizar usuário!');
+        setErrorMessage(error);
         handleShowGeral();
       }
     } catch (error) {
-      console.error('Erro na requisição de atualização:', error);
+      console.error('Erro ao cadastrar usuário', error);
     }
   };
 
+  // ...
 
-
-//Buscando users do banco...
-      useEffect(() => {
-        const fetchData = async () => {
-          try {
-            const response = await fetch(`${apiUrl}/users/users`);
-            if (response.ok) {
-              const data = await response.json();
-              setUsuarios(data);
-            } else {
-              console.error('Erro ao obter usuários', response.statusText);
-            }
-          } catch (error) {
-            console.error('Erro ao obter usuários', error);
-          }
-        };
-    
-        fetchData();
-      }, []);
-
-
-      const handleCad = async () => {
-
-       
-
-        try {
-
-          if (!funcaoId) {
-            // Se funcaoId não foi selecionado, exiba uma mensagem de erro ou tome a ação apropriada
-            setErrorMessage("Escolha um perfil, usuário ou ADM...");
-
-            // Exibir modal de erro
-            handleShowGeral();
-            return;
-          }
-
-          // await new Promise((resolve) => setTimeout(resolve, 1000));
-
-          setErrorMessage('');
-          setSuccessMessage('');
-
-          // Obtenha o valor do campo select como uma string
-          const funcaoIdString = funcaoId.toString();
-
-          console.log('funcaoId antes da chamada fetch:', funcaoId);
-
-          const response = await fetch(`${apiUrl}/users/cadastro`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username, password,funcaoId: funcaoIdString}),
-          });
-    
-          if (response.ok) {
-            const data = await response.json();
-            console.log('Usuário cadastrado:', data.user);
-            console.log("Cadastrado com sucesso!");
-
-             // Resetar os campos do formulário
-              setUsername('');
-              setPassword('');
-              setFuncaoId('');
-
-              // Exibir modal de sucesso
-            setSuccessMessage('Usuário cadastrado com sucesso!');
-
-            handleShowGeral();
-
-            setTimeout(() => {
-              router.reload();
-            }, "2000");
-            
-
-            
-          } else {
-            // console.error('Erro ao cadastrar usuário');
-            // alert("Erro ao cadastrar usuário");
-            const errorData = await response.json();
-            setErrorMessage(errorData.error);
-
-            // Exibir modal de erro
-            handleShowGeral();
-          }
-          //recarrega a página após o cadastro do usuário
-        } catch (error) {
-          console.error('Erro ao cadastrar usuário', error);
-        }
-      };
+     
 
 
 
