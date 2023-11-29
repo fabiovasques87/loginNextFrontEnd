@@ -1,5 +1,9 @@
 import apiUrl from '@/apiConfig';
 
+interface ExclusaoUsuarioResponse {
+    success: boolean;
+    error?: string;
+  }
 
 
 
@@ -45,6 +49,7 @@ import apiUrl from '@/apiConfig';
     }
   };
 
+  //cad ususario
 
   export const cadastrarUsuario = async ( username: string, password: string,funcaoId: string) => {
     try {
@@ -66,5 +71,28 @@ import apiUrl from '@/apiConfig';
     } catch (error) {
       console.error('Erro ao cadastrar usuário', error);
       return { success: false, error: 'Erro ao cadastrar usuário' };
+    }
+  };
+
+  // funcao para exclusao de registros:
+  export const excluirUsuario = async (id: number): Promise<ExclusaoUsuarioResponse> => {
+    try {
+      const response = await fetch(`${apiUrl}/users/excluir/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          // Adicione cabeçalhos de autenticação aqui, se necessário (token, etc.)
+        },
+      });
+  
+      if (response.ok) {
+        return { success: true };
+      } else {
+        const errorData = await response.json();
+        return { success: false, error: errorData.error };
+      }
+    } catch (error) {
+      console.error(`Erro na requisição de exclusão: ${error.message}`);
+      return { success: false, error: 'Erro na requisição de exclusão' };
     }
   };

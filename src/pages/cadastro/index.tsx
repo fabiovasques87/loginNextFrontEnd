@@ -14,7 +14,7 @@ import apiUrl from '@/apiConfig';
 
 //chamando o arquivo de APIS
 
-import { updateUser, fetchUsers, cadastrarUsuario  } from '@/apiService';
+import { updateUser, fetchUsers, cadastrarUsuario, excluirUsuario   } from '@/apiService';
 
 import EditUserModal from '@/components/modal/EditUserModal';
 
@@ -177,6 +177,8 @@ const index = () => {
            }[];
       };
 
+  //arquivo de APIS -> apiService.ts     
+
   //Funçã para consumir a API de update do usuário
 
       const handleSave = async () => {
@@ -249,53 +251,26 @@ const index = () => {
     }
   };
 
-  // ...
-
-     
-
-
-
+  
       // funcao para exclusao de registros:
-      const handleExcluir = async (usuario : Usuario) => {
-        try {
-          const response = await fetch(`${apiUrl}/users/excluir/${usuario.id}`, {
-            method: 'DELETE',
-            headers: {
-              'Content-Type': 'application/json',
-              // Se necessário, adicione cabeçalhos de autenticação aqui (token, etc.)
-            },
-          });
+     
+      const handleExcluir = async (usuario: Usuario) => {
+        const result = await excluirUsuario(usuario.id);
       
-          if (response.ok) {
-            console.log('Usuário excluído com sucesso!');
-            setSuccessMessage('Usuário Excluído com sucesso!');
-            handleShowGeral();
-
-            setTimeout(() => {
-              router.reload();
-            }, "1000");
-            
-
-            // Atualize o estado ou realize outras ações necessárias após a exclusão bem-sucedida
-          } else {
-            const errorData = await response.json();
-            console.error(`Erro ao excluir usuário: ${errorData.error}`);
-            // Lide com o erro, mostre uma mensagem de erro, etc.
-          }
-        } catch (error) {
-          console.error('Erro na requisição de exclusão:', error.message);
-          setErrorMessage("Escolha um perfil, usuário ou ADM...");
-
-          // Exibir modal com msgem de erro
+        if (result.success) {
+          console.log('Usuário excluído com sucesso!');
+          setSuccessMessage('Usuário excluído com sucesso!');
           handleShowGeral();
-
-
-
-
-          // Lide com o erro, mostre uma mensagem de erro, etc.
+      
+          setTimeout(() => {
+            router.reload();
+          }, 1000);
+        } else {
+          console.error(`Erro ao excluir usuário: ${result.error}`);
+          setErrorMessage('Erro ao excluir usuário!');
+          handleShowGeral();
         }
       };
-      
 
     return (
 
