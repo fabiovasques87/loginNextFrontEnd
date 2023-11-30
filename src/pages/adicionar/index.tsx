@@ -52,7 +52,7 @@ const index = () => {
           setContentVisible(true);
         // O usuário tem permissão de administrador
         console.log('Usuário é um administrador.');
-        router.push('/cadastro')
+        router.push('/adicionar')
         } else {
 
       

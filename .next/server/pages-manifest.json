@@ -4,5 +4,6 @@
   "/_document": "pages/_document.js",
   "/dashboard": "pages/dashboard.js",
   "/adicionar": "pages/adicionar.js",
-  "/cadastro": "pages/cadastro.js"
+  "/cadastro": "pages/cadastro.js",
+  "/": "pages/index.js"
 }
