@@ -10,7 +10,16 @@ import { Header } from '@/components/Header';
 import { useEffect, useState} from "react";
 import { useRouter } from 'next/router';
 
+
+//chama o arquivo de verificação se há token ou não...
+import { verifica } from '@/verifica'; 
+
+
 import apiUrl from '@/apiConfig';
+
+//chamando o arquivo de APIS
+
+import { updateUser, fetchUsers, cadastrarUsuario, excluirUsuario   } from '@/apiService';
 
 import EditUserModal from '@/components/modal/EditUserModal';
 
@@ -66,22 +75,6 @@ const index = () => {
       }       
   
 
-      //funcao para atualizar o estado do campo select com o privilégio do usuário
-      // const handleChangeFuncao =() => {
-      //   selectedPrivilege((prevUser) => ({
-      //     ...prevUser!,
-      //     funcao: e.target.value,
-      //   }));
-      // }
-
-
-    
-    
-      // const handleCloseModal = () => {
-      //   setShowModal(false);
-      // };
-
-
     //editar usuário selecionado
       // Função para abrir o modal e definir o usuário selecionado
   const handleEditClick = (user: Usuario) => {
@@ -116,78 +109,31 @@ const index = () => {
   };
 
 
-    //Funçã para consumir a API de update do usuário
-
-      const handleSave = async () => {
-        try {
-          const response = await fetch(`${apiUrl}/users/atualizar-usuario/${selectedUser.id}`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            // body: JSON.stringify({ funcaoId: parseInt(selectedPrivilege) }),
-            body: JSON.stringify({ funcaoId: parseInt(selectedFuncaoId)}),
-
-          });
-    
-          if (response.ok) {
-            const data = await response.json();
-            setSuccessMessage('Usuário alterado com sucesso');
-            handleShowGeral();
-    
-            // Atualizar localmente os dados do usuário, se necessário
-            // Ex: dispatch({ type: 'UPDATE_USER', payload: data.user });
-    
-            // Fechar o modal após a atualização
-            // onClose();
-          } else {
-            console.error('Erro ao atualizar usuário:', response.statusText);
-            setErrorMessage('Erro ao atualizar usuário!');
-            handleShowGeral();
-          }
-        } catch (error) {
-          console.error('Erro na requisição de atualização:', error);
-        }
-      };
-
+  
     const router = useRouter();
     const [contentVisible, setContentVisible] = useState(false);
 
-      // Verifique se o usuário está autenticado
-      useEffect(() => {
-        const token = localStorage.getItem('token'); // Ou a fonte onde você armazenou o token
-
-        if (!token) {
-        // Se não houver token, redirecione o usuário de volta para a página de login
-        router.push('/login');
-        }
-    }, []);
-
     useEffect(() => {
-        const token = localStorage.getItem('token'); // Obtenha o token do armazenamento local
+      const decodedToken = verifica();
     
-        if (!token) {
-          // Se não houver token, redirecione o usuário de volta para a página de login
-          router.push('/login');
+      if (!decodedToken) {
+        // Se não houver token, redirecione o usuário de volta para a página de login
+        router.push('/');
+      } else {
+        // Verifique se o token inclui informações de função (role)
+        if (decodedToken.role === 'adm') {
+          setContentVisible(true);
+        // O usuário tem permissão de administrador
+        console.log('Usuário é um administrador.');
+        router.push('/cadastro')
         } else {
-          // Decodifique o token para acessar suas informações
-          const decodedToken = jwt.decode(token);
-          console.log(decodedToken);
-    
-          // Verifique se o token inclui informações de função (role)
-          if (decodedToken.role === 'adm') {
-                  setContentVisible(true);
-            // O usuário tem permissão de administrador
-            console.log('Usuário é um administrador.');
-            router.push('/cadastro')
-          } else {
-            // O usuário não tem permissão de administrador
-            console.log('Usuário não é um administrador.');
-            alert('Usuário não é um administrador.');
-            router.push('/dashboard');
+          // O usuário não tem permissão de administrador
+          console.log('Usuário não é um administrador.');
+          alert('Usuário não é um administrador.');
+          router.push('/dashboard');
           }
         }
-      }, []);
+        }, []);
 
       //tipagem para buscar usuarios do banco
 
@@ -206,138 +152,112 @@ const index = () => {
            }[];
       };
 
-//Buscando users do banco...
-      useEffect(() => {
-        const fetchData = async () => {
-          try {
-            const response = await fetch(`${apiUrl}/users/users`);
-            if (response.ok) {
-              const data = await response.json();
-              setUsuarios(data);
-            } else {
-              console.error('Erro ao obter usuários', response.statusText);
-            }
-          } catch (error) {
-            console.error('Erro ao obter usuários', error);
-          }
-        };
-    
-        fetchData();
-      }, []);
+  //arquivo de APIS -> apiService.ts     
 
+  //Funçã para consumir a API de update do usuário
 
-      const handleCad = async () => {
-
-       
-
+      const handleSave = async () => {
         try {
-
-          if (!funcaoId) {
-            // Se funcaoId não foi selecionado, exiba uma mensagem de erro ou tome a ação apropriada
-            setErrorMessage("Escolha um perfil, usuário ou ADM...");
-
-            // Exibir modal de erro
-            handleShowGeral();
-            return;
-          }
-
-          // await new Promise((resolve) => setTimeout(resolve, 1000));
-
-          setErrorMessage('');
-          setSuccessMessage('');
-
-          // Obtenha o valor do campo select como uma string
-          const funcaoIdString = funcaoId.toString();
-
-          console.log('funcaoId antes da chamada fetch:', funcaoId);
-
-          const response = await fetch(`${apiUrl}/users/cadastro`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username, password,funcaoId: funcaoIdString}),
-          });
-    
-          if (response.ok) {
-            const data = await response.json();
-            console.log('Usuário cadastrado:', data.user);
-            console.log("Cadastrado com sucesso!");
-
-             // Resetar os campos do formulário
-              setUsername('');
-              setPassword('');
-              setFuncaoId('');
-
-              // Exibir modal de sucesso
-            setSuccessMessage('Usuário cadastrado com sucesso!');
-
-            handleShowGeral();
-
-            setTimeout(() => {
-              router.reload();
-            }, "2000");
-            
-
-            
-          } else {
-            // console.error('Erro ao cadastrar usuário');
-            // alert("Erro ao cadastrar usuário");
-            const errorData = await response.json();
-            setErrorMessage(errorData.error);
-
-            // Exibir modal de erro
-            handleShowGeral();
-          }
-          //recarrega a página após o cadastro do usuário
-        } catch (error) {
-          console.error('Erro ao cadastrar usuário', error);
-        }
-      };
-
-
-
-      // funcao para exclusao de registros:
-      const handleExcluir = async (usuario : Usuario) => {
-        try {
-          const response = await fetch(`${apiUrl}/users/excluir/${usuario.id}`, {
-            method: 'DELETE',
-            headers: {
-              'Content-Type': 'application/json',
-              // Se necessário, adicione cabeçalhos de autenticação aqui (token, etc.)
-            },
-          });
-      
-          if (response.ok) {
-            console.log('Usuário excluído com sucesso!');
-            setSuccessMessage('Usuário Excluído com sucesso!');
-            handleShowGeral();
-
-            setTimeout(() => {
-              router.reload();
-            }, "1000");
-            
-
-            // Atualize o estado ou realize outras ações necessárias após a exclusão bem-sucedida
-          } else {
-            const errorData = await response.json();
-            console.error(`Erro ao excluir usuário: ${errorData.error}`);
-            // Lide com o erro, mostre uma mensagem de erro, etc.
-          }
-        } catch (error) {
-          console.error('Erro na requisição de exclusão:', error.message);
-          setErrorMessage("Escolha um perfil, usuário ou ADM...");
-
-          // Exibir modal com msgem de erro
+          const data = await updateUser(selectedUser.id, parseInt(selectedFuncaoId));
+          setSuccessMessage('Usuário alterado com sucesso');
           handleShowGeral();
-
-
-
-
-          // Lide com o erro, mostre uma mensagem de erro, etc.
+      
+          setTimeout(() => {
+            router.reload();
+          }, 2000);
+                
+          // Fechar o modal após a atualização
+        } catch (error) {
+          setErrorMessage('Erro ao atualizar usuário!');
+          handleShowGeral();
         }
       };
+
+
+//Buscando users do banco...
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchUsers();
+      if (data) {
+        setUsuarios(data);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  //cadastrar usuários
+
+  const handleCad = async () => {
+    try {
+      if (!funcaoId) {
+        setErrorMessage("Escolha um perfil, usuário ou ADM...");       
+        handleShowGeral();
+        return;
+      }
+
+      if (!username) {
+        setErrorMessage("Preencha o campo com o nome do usuário!");
+        handleShowGeral();
+        return;
+      }
+
+      if (!password) {
+        setErrorMessage("Preencha o campo com a senha!");
+        handleShowGeral();
+        return;
+      }
+
+      setErrorMessage('');
+      setSuccessMessage('');
+
+      const { success, user, error } = await cadastrarUsuario(username, password, funcaoId);
+
+      if (success) {
+        console.log('Usuário cadastrado:', user);
+        console.log('Cadastrado com sucesso!');
+
+        setUsername('');
+        setPassword('');
+        setFuncaoId('');
+
+        setSuccessMessage('Usuário cadastrado com sucesso!');
+        handleShowGeral();
+
+        setTimeout(() => {
+          router.reload();
+        }, 2000);
+      } else {
+        setErrorMessage(error);
+        handleShowGeral();
+      }
+    } catch (error) {
+      console.error('Erro ao cadastrar usuário', error);
+    }
+  };
+
+  
+      // funcao para exclusao de registros:
+     
+      const handleExcluir = async (usuario: Usuario) => {
+        const result = await excluirUsuario(usuario.id);
       
+        if (result.success) {
+          console.log('Usuário excluído com sucesso!');
+          setSuccessMessage('Usuário excluído com sucesso!');
+          handleShowGeral();
+      
+          setTimeout(() => {
+            router.reload();
+          }, 1000);
+        } else {
+          console.error(`Erro ao excluir usuário: ${result.error}`);
+          setErrorMessage('Erro ao excluir usuário!');
+          handleShowGeral();
+        }
+      };
 
     return (
 

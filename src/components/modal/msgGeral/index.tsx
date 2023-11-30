@@ -22,34 +22,13 @@ const CadUser: React.FC<CadUser>  = ({ showModal, handleClose,successMessage,err
   };
 
   // Estado para controlar o atraso
-  const [delayedClose, setDelayedClose] = useState(false);
-
-  useEffect(() => {
-    if (showModal) {
-      // Define um atraso de 3 segundos para fechar o modal
-      const timeoutId = setTimeout(() => {
-        setDelayedClose(true);
-      }, 3000);
-
-      // Limpa o timeout ao desmontar o componente
-      return () => clearTimeout(timeoutId);
-    }
-  }, [showModal]);
-
-  useEffect(() => {
-    // Quando delayedClose for true, fecha o modal e recarrega a página
-    if (delayedClose) {
-      handleClose();
-      reloadPage();
-    }
-  }, [delayedClose, handleClose, reloadPage]);
-
+  
 
 
     return ( 
 
         
-            <Modal show={showModal && !delayedClose} onHide={handleClose}>
+            <Modal show={showModal} onHide={handleClose}>
               <Modal.Header closeButton>
                 <Modal.Title>{successMessage ? 'Sucesso!' : 'Erro!'}</Modal.Title>
               </Modal.Header>
