@@ -1,3 +1,5 @@
+import apiUrl from '@/apiConfig';
+
 
 import { UserProvider } from '../../contexts/UserContext';
 import { useUser } from '../../contexts/UserContext';
@@ -68,7 +70,7 @@ const Login: React.FC = () => {
 
     try {
       // Faça a solicitação para autenticação
-      const response = await fetch('http://localhost:7000/auth/login', {
+      const response = await fetch(`${apiUrl}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
