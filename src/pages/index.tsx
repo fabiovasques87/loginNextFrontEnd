@@ -2,17 +2,25 @@
 import { UserProvider } from '../../contexts/UserContext';
 import { useUser } from '../../contexts/UserContext';
 
-import React, {useState} from 'react';
+import React, {useState, FormEvent } from 'react';
 import { useRouter } from 'next/router';
 
 import styles from './login.module.css'
 import { BotForm } from '@/components/BotForm';
 
+import ModalGeral from '@/components/modal/ModalGeral';
+
+
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importe o Bootstrap CSS
 import { Spinner } from 'react-bootstrap';
 
 
-const Login = () => {
+
+
+const Login: React.FC = () => {
+
+
+
 
   const router = useRouter();
 
@@ -23,55 +31,86 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = async () => {
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  
+  const [showModalGeral, setShowModalGeral] = useState(false);
+
+  // funções para abrir e fechar o modal:
+
+  const handleShowGeral = () => {
+    console.log('Showing modal');
+    setShowModalGeral(true);
+  };
+
+  const handleClose = () => {
+    console.log('Closing modal');
+    setShowModalGeral(false);
+  };
+  
+
+
+
+  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
+
+    e.preventDefault(); // Evita a recarga da página ao pressionar Enter no formulário
+
+    // Verifique se os campos de usuário e senha estão preenchidos
+    if (!username || !password) {
+      setErrorMessage('Preencha todos os campos');
+      handleShowGeral();
+     // alert('Preencha todos os campos.');
+      return;
+    }
+
     setLoading(true); // Ative o estado de carregamento
 
-    
-
     try {
-
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Faça uma solicitação para o servidor Node.js para autenticação
+      // Faça a solicitação para autenticação
       const response = await fetch('http://localhost:7000/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }), // Use os valores dos campos de formulário
+        body: JSON.stringify({ username, password }),
       });
 
       if (response.ok) {
-        // Analise a resposta JSON para obter o token
         const data = await response.json();
-        const { token } = data;
-       // Armazene o token no localStorage
-       localStorage.setItem('token', token);
-        // console.log("user logado:", username);
-          // Utilize as informações reais do usuário recebidas do servidor
-          setUser({
-            username: username,
-            role: data.role,
-            // Outras informações do usuário, se necessário
-          });      
+        localStorage.setItem('token', data.token);
+
+        // Utilize as informações reais do usuário recebidas do servidor
+        setUser({
+          username: username,
+          role: data.role,
+          // Outras informações do usuário, se necessário
+        });
 
         // Redirecione o usuário para a página de dashboard com o token
         router.push('/dashboard');
+
       } else {
-        // Lidar com erros de autenticação
-        console.error('Erro de autenticação');
-        alert('Erro de autenticação');
+        const errorData = await response.json();
+        console.error('Erro de autenticação:', errorData.message);
+       setErrorMessage(errorData.message || 'Erro de autenticação. Tente novamente mais tarde.')
+       handleShowGeral();
+
+       
+        //alert(errorData.message || 'Erro de autenticação. Tente novamente mais tarde.');
       }
+      
     } catch (error) {
       console.error('Erro ao fazer login:', error);
-      alert(error);
+     // setErrorMessage('Erro ao fazer login:', error)
+      handleShowGeral();
+      alert('Erro ao fazer login. Tente novamente mais tarde.');
+
     } finally {
-        setLoading(false); // Desative o estado de carregamento
-      }
-  };
+      setLoading(false); // Desative o estado de carregamento
+    }
 
-
-    
+  }
 
 
     return (
@@ -109,6 +148,11 @@ const Login = () => {
         )}
 
         </form>
+
+              {/* tratando do modal geral */}
+        {(successMessage || errorMessage) && (
+        <ModalGeral showModal={showModalGeral} handleClose={handleClose} successMessage={successMessage} errorMessage={errorMessage} />
+      )}
 
 
   </div>

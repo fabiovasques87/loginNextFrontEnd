@@ -1,7 +1,7 @@
 
 import styles from './Cadastro.module.css';
 
-import CadUser from '@/components/modal/msgGeral';
+import ModalGeral from '@/components/modal/ModalGeral';
 
 import { BotForm } from '@/components/BotForm';
 
@@ -9,6 +9,11 @@ import { Header } from '@/components/Header';
 
 import { useEffect, useState} from "react";
 import { useRouter } from 'next/router';
+
+
+//chama o arquivo de verificação se há token ou não...
+import { verifica } from '@/verifica'; 
+
 
 import apiUrl from '@/apiConfig';
 
@@ -108,41 +113,27 @@ const index = () => {
     const router = useRouter();
     const [contentVisible, setContentVisible] = useState(false);
 
-      // Verifique se o usuário está autenticado
-      useEffect(() => {
-        const token = localStorage.getItem('token'); // Ou a fonte onde você armazenou o token
-
-        if (!token) {
-        // Se não houver token, redirecione o usuário de volta para a página de login
-        router.push('/login');
-        }
-    }, []);
-
     useEffect(() => {
-        const token = localStorage.getItem('token'); // Obtenha o token do armazenamento local
+      const decodedToken = verifica();
     
-        if (!token) {
-          // Se não houver token, redirecione o usuário de volta para a página de login
-          router.push('/login');
+      if (!decodedToken) {
+        // Se não houver token, redirecione o usuário de volta para a página de login
+        router.push('/');
+      } else {
+        // Verifique se o token inclui informações de função (role)
+        if (decodedToken.role === 'adm') {
+          setContentVisible(true);
+        // O usuário tem permissão de administrador
+        console.log('Usuário é um administrador.');
+        router.push('/cadastro')
         } else {
-          // Decodifique o token para acessar suas informações
-          const decodedToken = jwt.decode(token);
-          console.log(decodedToken);
-    
-          // Verifique se o token inclui informações de função (role)
-          if (decodedToken.role === 'adm') {
-                  setContentVisible(true);
-            // O usuário tem permissão de administrador
-            console.log('Usuário é um administrador.');
-            router.push('/cadastro')
-          } else {
-            // O usuário não tem permissão de administrador
-            console.log('Usuário não é um administrador.');
-            alert('Usuário não é um administrador.');
-            router.push('/dashboard');
+          // O usuário não tem permissão de administrador
+          console.log('Usuário não é um administrador.');
+          alert('Usuário não é um administrador.');
+          router.push('/dashboard');
           }
         }
-      }, []);
+        }, []);
 
       //tipagem para buscar usuarios do banco
 
@@ -284,7 +275,7 @@ const index = () => {
                     
                        {/* Exibir o modal em caso de sucesso ou erro */}
                       {(successMessage || errorMessage) && (
-                        <CadUser  showModal={showModalGeral} handleClose={handleClose} successMessage={successMessage} errorMessage={errorMessage} />
+                        <ModalGeral  showModal={showModalGeral} handleClose={handleClose} successMessage={successMessage} errorMessage={errorMessage} />
                       )}
                <div className={styles.containerForm}>
                       <form>
