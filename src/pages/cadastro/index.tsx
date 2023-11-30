@@ -113,6 +113,8 @@ const index = () => {
     const router = useRouter();
     const [contentVisible, setContentVisible] = useState(false);
 
+    const [isAdmin, setIsAdmin] = useState(false);
+
     useEffect(() => {
       const decodedToken = verifica();
     
@@ -122,15 +124,37 @@ const index = () => {
       } else {
         // Verifique se o token inclui informações de função (role)
         if (decodedToken.role === 'adm') {
+          setIsAdmin(true);
           setContentVisible(true);
         // O usuário tem permissão de administrador
         console.log('Usuário é um administrador.');
         router.push('/cadastro')
         } else {
+
+      
+
           // O usuário não tem permissão de administrador
           console.log('Usuário não é um administrador.');
-          alert('Usuário não é um administrador.');
-          router.push('/dashboard');
+          setErrorMessage('Usuário não é um administrador.');
+          handleShowGeral();
+        
+          
+        // Desativa a interação do usuário enquanto o modal está visível
+        document.body.style.pointerEvents = 'none';
+
+                // Redireciona para o dashboard após 5 segundos
+      setTimeout(() => {
+        window.location.href = "/dashboard";
+        //router.push('/dashboard');
+        // Reativa a interação do usuário após o redirecionamento
+        document.body.style.pointerEvents = 'auto';
+      }, 3000);
+
+         
+
+
+          //alert('Usuário não é um administrador.');
+          //router.push('/dashboard');
           }
         }
         }, []);
@@ -277,6 +301,9 @@ const index = () => {
                       {(successMessage || errorMessage) && (
                         <ModalGeral  showModal={showModalGeral} handleClose={handleClose} successMessage={successMessage} errorMessage={errorMessage} />
                       )}
+
+
+
                <div className={styles.containerForm}>
                       <form>
                     <input
@@ -328,31 +355,40 @@ const index = () => {
             </div>
                 </>
 
-                <Table responsive="lg" className={styles.table}>
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Privilégio</th>
-            <th colSpan={2} className={styles.tableAcoes}>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {usuarios.map((usuario) => (
-            <tr key={usuario.id}>
-              <td>{usuario.username}</td>
-                <td>{usuario.userFuncao[0]?.funcao.nome || 'Sem nível de acesso'}</td>
-                {/* <Link href={editar}><td >Editar</td> </Link> */}
-                {/* <td><Link href={'editar'} className={styles.link}>Editar</Link></td> */}
-                {/* <td> <button   className='btn btn-success' onClick={() => handleEditClick(usuario)}>Editar</button></td> */}
-                {/* <td> <button   className='btn btn-danger' onClick={() => handleEditClick(usuario)}>Excluir</button></td> */}
-                <td><FontAwesomeIcon icon={faPenToSquare} onClick={() => handleEditClick(usuario)} className={styles.IconEdit}/></td>
-                <td><FontAwesomeIcon icon={faTrash}  className={styles.IconTrash} onClick={() => handleExcluir (usuario)}/></td>
+                {isAdmin ? (
+                // Renderize seu conteúdo sensível apenas se o usuário for um administrador
+                <div>
 
-            </tr>
-          ))}
-        </tbody>
-       
-      </Table>
+                      <Table responsive="lg" className={styles.table}>
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Privilégio</th>
+                  <th colSpan={2} className={styles.tableAcoes}>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                {usuarios.map((usuario) => (
+                  <tr key={usuario.id}>
+                    <td>{usuario.username}</td>
+                      <td>{usuario.userFuncao[0]?.funcao.nome || 'Sem nível de acesso'}</td>
+                      {/* <Link href={editar}><td >Editar</td> </Link> */}
+                      {/* <td><Link href={'editar'} className={styles.link}>Editar</Link></td> */}
+                      {/* <td> <button   className='btn btn-success' onClick={() => handleEditClick(usuario)}>Editar</button></td> */}
+                      {/* <td> <button   className='btn btn-danger' onClick={() => handleEditClick(usuario)}>Excluir</button></td> */}
+                      <td><FontAwesomeIcon icon={faPenToSquare} onClick={() => handleEditClick(usuario)} className={styles.IconEdit}/></td>
+                      <td><FontAwesomeIcon icon={faTrash}  className={styles.IconTrash} onClick={() => handleExcluir (usuario)}/></td>
+
+                  </tr>
+                ))}
+              </tbody>
+            
+            </Table>
+            
+
+      </div>
+      ) : null}
+    
 
             {/* Modal de edição */}
             <EditUserModal
