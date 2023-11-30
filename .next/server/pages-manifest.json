@@ -1,9 +1,8 @@
 {
   "/_app": "pages/_app.js",
-  "/_document": "pages/_document.js",
   "/_error": "pages/_error.js",
-  "/cadastro": "pages/cadastro.js",
-  "/": "pages/index.js",
+  "/_document": "pages/_document.js",
   "/dashboard": "pages/dashboard.js",
-  "/adicionar": "pages/adicionar.js"
+  "/adicionar": "pages/adicionar.js",
+  "/cadastro": "pages/cadastro.js"
 }
