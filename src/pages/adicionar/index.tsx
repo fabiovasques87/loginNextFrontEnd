@@ -7,6 +7,12 @@ import jwt from 'jsonwebtoken';
 
 import ModalGeral from '@/components/modal/ModalGeral';
 
+import { Header } from '@/components/Header';
+
+
+import { Form, Row, Col } from 'react-bootstrap';
+
+import styles from './adiconar.module.css';
 
 const index = () => {
 
@@ -92,13 +98,61 @@ return (
       <ModalGeral  showModal={showModalGeral} handleClose={handleClose} successMessage={successMessage} errorMessage={errorMessage} />
     )}
 
+        <Header />
 
         {isAdmin ? (
                 // Renderize seu conteúdo sensível apenas se o usuário for um administrador
-                <div>
-        página de adicionar produtos
+                <div className={styles.formAddProd}>
+       
+
+          <Form>
+      <Row>
+        <Col>
+          <Form.Group controlId="nomeprod">
+            <Form.Label>Produto</Form.Label>
+            <Form.Control type="text" placeholder="Produto" />
+          </Form.Group>
+        </Col>
+        <Col>
+          <Form.Group controlId="campo2">
+            <Form.Label>Campo 2</Form.Label>
+            <Form.Control type="text" placeholder="Digite aqui" />
+          </Form.Group>
+        </Col>
+        <Col>
+          <Form.Group controlId="campo2">
+            <Form.Label>Campo 2</Form.Label>
+            <Form.Control type="text" placeholder="Digite aqui" />
+          </Form.Group>
+        </Col>
+      </Row>
+          <Row>
+          <Col>
+          <Form.Group controlId="campo2">
+            <Form.Label>Campo 2</Form.Label>
+            <Form.Control type="text" placeholder="Digite aqui" />
+          </Form.Group>
+        </Col>
+        <Col>
+          <Form.Group controlId="campo2">
+            <Form.Label>Campo 2</Form.Label>
+            <Form.Control type="text" placeholder="Digite aqui" />
+          </Form.Group>
+        </Col>
+        <Col>
+          <Form.Group controlId="campo2">
+            <Form.Label>Campo 2</Form.Label>
+            <Form.Control type="text" placeholder="Digite aqui" />
+          </Form.Group>
+        </Col>
+          </Row>
+    </Form>
+
+          </div>
+
+ 
+
           
-        </div>
       ) : null}
 
 
