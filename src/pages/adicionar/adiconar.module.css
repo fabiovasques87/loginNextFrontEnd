@@ -5,3 +5,31 @@
     background-color: #DDD;
     padding: 20px;
 }
+
+.btn Button{
+    margin-top: 20px;
+    width: 10%;
+    
+}
+
+.IconTrash{
+    font-size: 26px;
+    color: red;
+    cursor: pointer;
+}
+.IconEdit{
+    font-size: 26px;
+    color: #2E8B57;
+    cursor: pointer;
+}
+
+
+
+@media(max-width:760px){
+    .formAddProd{
+        height: 100%;
+    }
+    .btn Button{
+        width: 100%;
+    }
+}
