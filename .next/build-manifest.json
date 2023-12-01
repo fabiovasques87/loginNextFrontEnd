@@ -27,10 +27,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/adicionar.js"
     ],
-    "/cadastro": [
+    "/dashboard": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/cadastro.js"
+      "static/chunks/pages/dashboard.js"
     ]
   },
   "ampFirstPages": []

@@ -201,9 +201,9 @@ return (
                 onChange={handleChange}
                 >
                   <option value="opcao1">Selecionar</option>
-                  <option value="opcao2">Fornecedor1</option>
-                  <option value="opcao2">Fornecedor2</option>
-                  <option value="opcao2">Fornecedor3</option>
+                  <option value="fornecedor1">Fornecedor1</option>
+                  <option value="fornecedor2">Fornecedor2</option>
+                  <option value="fornecedor3">Fornecedor3</option>
 
               </Form.Control>
               </Form.Group>
@@ -216,9 +216,9 @@ return (
                 value={formData.unEstoque}
                 onChange={handleChange}
                 >
-                  <option value="opcao1">Selecionar</option>
-                  <option value="opcao2">KG</option>
-                  <option value="opcao2">UN</option>
+                  <option>Selecionar</option>
+                  <option value="KG">KG</option>
+                  <option value="UN">UN</option>
               </Form.Control>
               </Form.Group>
 
