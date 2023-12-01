@@ -96,40 +96,41 @@ const index = () => {
   const ondleCad = async () => {
     //alert("chegou aqui");
 
+    const errorMessages: string[] = [];
+
     if(!formData.codigo){
-      setErrorMessage('favor preencher o campo codigo de barras.');
-      handleShowGeral();
-      //alert("favor preencher o campo codigo de barras");
+      errorMessages.push('favor preencher o campo codigo de barras.');
     }
     
     if(!formData.produto){
-      setErrorMessage('favor preencher o campo produto.');
-      handleShowGeral();
+      errorMessages.push('favor preencher o campo produto.');
     }
     if(!formData.descricao){
-      setErrorMessage('favor preencher o campo descição.');
-      handleShowGeral();
+      errorMessages.push('favor preencher o campo descição.');
     }
 
     if(!formData.fornecedor){
-      setErrorMessage('favor preencher o campo o fornecedor.');
-      handleShowGeral();
+      errorMessages.push('favor preencher o campo o fornecedor.');
     }
 
     if(!formData.unEstoque){
-      setErrorMessage('favor preencher o campo com a unidade de estoque.');
-      handleShowGeral();
+      errorMessages.push('favor preencher o campo com a unidade de estoque.');
     }
 
     if(!formData.precoCustoVenda){
-      setErrorMessage('favor preencher o campo o preço de custo/venda');
-      handleShowGeral();
+      errorMessages.push('favor preencher o campo o preço de custo/venda');
     }
     
     if(!formData.limite){
-      setErrorMessage('favor preencher o campo o limite do estoque');
-      handleShowGeral();
+      errorMessages.push('favor preencher o campo o limite do estoque');
     }
+
+    if (errorMessages.length > 0) {
+      setErrorMessage(errorMessages.join('\n'));
+      handleShowGeral();
+      return; // Evita a execução do restante da função se houver erros
+    }
+
 
     try {
       console.log('Dados a serem enviados:', formData);
