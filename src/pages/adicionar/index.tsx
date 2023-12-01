@@ -25,74 +25,6 @@ import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 const index = () => {
 
 
-  const [formData, setFormData] = useState<FormData>({
-    codigo: '',
-    produto: '',
-    descricao: '',
-    fornecedor: '',
-    unEstoque: '',
-    precoCustoVenda: 0,
-    limite: 0,
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData: FormData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const ondleCad = async () => {
-    //alert("chegou aqui");
-  
-    try {
-      console.log('Dados a serem enviados:', formData);
-  
-      const response = await fetch('/sua-rota-api', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-  
-      if (response.ok) {
-        console.log('Dados enviados com sucesso!');
-        // Lógica adicional, se necessário
-      } else {
-        console.error('Falha ao enviar dados.');
-        // Lógica adicional, se necessário
-      }
-    } catch (error) {
-      console.error('Erro ao enviar dados:', error);
-      // Lógica adicional, se necessário
-    }
-
-  }
-  //funcaoes para msg 
-  const [successMessage, setSuccessMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-
-
-  //funao para modal
-  const [showModalGeral, setShowModalGeral] = useState(false);
-
-  // Função para fechar o modal
-  const handleCloseModal = () => {
-    setShowModalGeral(false);
-  };
-
-  const handleShowGeral = () => {
-    console.log('Showing modal');
-    setShowModalGeral(true);
-  };
-
-  const handleClose = () => {
-    console.log('Closing modal');
-    setShowModalGeral(false);
-  };
-
   const router = useRouter();
   const [contentVisible, setContentVisible] = useState(false);
 
@@ -142,6 +74,112 @@ const index = () => {
         }
         }, []);
 
+
+  const [formData, setFormData] = useState<FormData>({
+    codigo: '',
+    produto: '',
+    descricao: '',
+    fornecedor: '',
+    unEstoque: '',
+    precoCustoVenda: '',
+    limite: '',
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData: FormData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const ondleCad = async () => {
+    //alert("chegou aqui");
+
+    if(!formData.codigo){
+      setErrorMessage('favor preencher o campo codigo de barras.');
+      handleShowGeral();
+      //alert("favor preencher o campo codigo de barras");
+    }
+    
+    if(!formData.produto){
+      setErrorMessage('favor preencher o campo produto.');
+      handleShowGeral();
+    }
+    if(!formData.descricao){
+      setErrorMessage('favor preencher o campo descição.');
+      handleShowGeral();
+    }
+
+    if(!formData.fornecedor){
+      setErrorMessage('favor preencher o campo o fornecedor.');
+      handleShowGeral();
+    }
+
+    if(!formData.unEstoque){
+      setErrorMessage('favor preencher o campo com a unidade de estoque.');
+      handleShowGeral();
+    }
+
+    if(!formData.precoCustoVenda){
+      setErrorMessage('favor preencher o campo o preço de custo/venda');
+      handleShowGeral();
+    }
+    
+    if(!formData.limite){
+      setErrorMessage('favor preencher o campo o limite do estoque');
+      handleShowGeral();
+    }
+
+    try {
+      console.log('Dados a serem enviados:', formData);
+  
+      const response = await fetch('/sua-rota-api', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+  
+      if (response.ok) {
+        console.log('Dados enviados com sucesso!');
+        // Lógica adicional, se necessário
+      } else {
+        console.error('Falha ao enviar dados.');
+        // Lógica adicional, se necessário
+      }
+    } catch (error) {
+      console.error('Erro ao enviar dados:', error);
+      // Lógica adicional, se necessário
+    }
+
+  }
+  //funcaoes para msg 
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
+
+  //funao para modal
+  const [showModalGeral, setShowModalGeral] = useState(false);
+
+  // Função para fechar o modal
+  const handleCloseModal = () => {
+    setShowModalGeral(false);
+  };
+
+  const handleShowGeral = () => {
+    console.log('Showing modal');
+    setShowModalGeral(true);
+  };
+
+  const handleClose = () => {
+    console.log('Closing modal');
+    setShowModalGeral(false);
+  };
+
+ 
+
 return (
 
   
@@ -162,8 +200,8 @@ return (
       <Row>
           <Col xs={12} md={3}>
             <Form.Group controlId="codigo">
-              <Form.Label>Codigo</Form.Label>
-              <Form.Control type="text" placeholder="Código" 
+              <Form.Label>Codigo de barras</Form.Label><span>*</span>
+              <Form.Control type="text" placeholder="Código de barras" 
               name="codigo"
               value={formData.codigo}
               onChange={handleChange}
@@ -172,7 +210,7 @@ return (
           </Col>
           <Col xs={12} md={3}>
             <Form.Group controlId="produto">
-              <Form.Label>Produto</Form.Label>
+              <Form.Label>Produto</Form.Label><span>*</span>
               <Form.Control type="text" placeholder="Produto" 
               name="produto"
               value={formData.produto}
@@ -182,7 +220,7 @@ return (
           </Col>
           <Col xs={12} md={6}>
             <Form.Group controlId="descricao">
-              <Form.Label>descricao</Form.Label>
+              <Form.Label>descricao</Form.Label><span>*</span>
               <Form.Control as="textarea" placeholder="descricao" 
               name="descricao"
               value={formData.descricao}
@@ -194,7 +232,7 @@ return (
             <Row>
               <Col xs={12} md={3}>
               <Form.Group controlId="fornecedor">
-                <Form.Label>Fornecedor</Form.Label>
+                <Form.Label>Fornecedor</Form.Label><span>*</span>
                 <Form.Control as="select" placeholder="Fornecedor" 
                 name="fornecedor"
                 value={formData.fornecedor}
@@ -210,7 +248,7 @@ return (
             </Col>
             <Col xs={12} md={3}>
               <Form.Group controlId="unEstoque">
-                <Form.Label>Unidade de estoque</Form.Label>
+                <Form.Label>Unidade de estoque</Form.Label><span>*</span>
                 <Form.Control as="select" placeholder="Fornecedor" 
                 name="unEstoque"
                 value={formData.unEstoque}
@@ -225,7 +263,7 @@ return (
             </Col>
             <Col xs={12} md={3}>
               <Form.Group controlId="precoCustoVenda">
-                <Form.Label>Preço custo/venda</Form.Label>
+                <Form.Label>Preço custo/venda</Form.Label><span>*</span>
                 <Form.Control type="number" placeholder="Digite aqui" 
                    name="precoCustoVenda"
                    value={formData.precoCustoVenda}
@@ -235,7 +273,7 @@ return (
             </Col>
             <Col xs={12} md={3}>
               <Form.Group controlId="limite">
-                <Form.Label>Limite do estoque</Form.Label>
+                <Form.Label>Limite do estoque</Form.Label><span>*</span>
                 <Form.Control type="number" placeholder="Limite do produto no estoque" 
                      name="limite"
                      value={formData.limite}

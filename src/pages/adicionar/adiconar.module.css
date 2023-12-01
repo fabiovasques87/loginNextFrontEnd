@@ -23,7 +23,10 @@
     cursor: pointer;
 }
 
-
+.formAddProd span {
+    padding: 5px;
+    color: red;
+}
 
 @media(max-width:760px){
     .formAddProd{
