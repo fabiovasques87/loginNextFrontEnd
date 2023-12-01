@@ -1,3 +1,5 @@
+import { FormData } from './types'; 
+
 import { useEffect, useState } from 'react';
 import { verifica } from '@/verifica'; 
 
@@ -23,10 +25,51 @@ import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 const index = () => {
 
 
-  const ondleCad = () => {
-    alert("chegou aqui");
-  }
+  const [formData, setFormData] = useState<FormData>({
+    codigo: '',
+    produto: '',
+    descricao: '',
+    fornecedor: '',
+    unEstoque: '',
+    precoCustoVenda: 0,
+    limite: 0,
+  });
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData: FormData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const ondleCad = async () => {
+    //alert("chegou aqui");
+  
+    try {
+      console.log('Dados a serem enviados:', formData);
+  
+      const response = await fetch('/sua-rota-api', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+  
+      if (response.ok) {
+        console.log('Dados enviados com sucesso!');
+        // Lógica adicional, se necessário
+      } else {
+        console.error('Falha ao enviar dados.');
+        // Lógica adicional, se necessário
+      }
+    } catch (error) {
+      console.error('Erro ao enviar dados:', error);
+      // Lógica adicional, se necessário
+    }
+
+  }
   //funcaoes para msg 
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -120,19 +163,31 @@ return (
           <Col xs={12} md={3}>
             <Form.Group controlId="codigo">
               <Form.Label>Codigo</Form.Label>
-              <Form.Control type="text" placeholder="Código" />
+              <Form.Control type="text" placeholder="Código" 
+              name="codigo"
+              value={formData.codigo}
+              onChange={handleChange}
+          />
             </Form.Group>
           </Col>
           <Col xs={12} md={3}>
             <Form.Group controlId="produto">
               <Form.Label>Produto</Form.Label>
-              <Form.Control type="text" placeholder="Produto" />
+              <Form.Control type="text" placeholder="Produto" 
+              name="produto"
+              value={formData.produto}
+              onChange={handleChange}
+          />
             </Form.Group>
           </Col>
           <Col xs={12} md={6}>
             <Form.Group controlId="descricao">
               <Form.Label>descricao</Form.Label>
-              <Form.Control as="textarea" placeholder="descricao" />
+              <Form.Control as="textarea" placeholder="descricao" 
+              name="descricao"
+              value={formData.descricao}
+              onChange={handleChange}
+                />
             </Form.Group>
           </Col>
         </Row>
@@ -140,7 +195,11 @@ return (
               <Col xs={12} md={3}>
               <Form.Group controlId="fornecedor">
                 <Form.Label>Fornecedor</Form.Label>
-                <Form.Control as="select" placeholder="Fornecedor" >
+                <Form.Control as="select" placeholder="Fornecedor" 
+                name="fornecedor"
+                value={formData.fornecedor}
+                onChange={handleChange}
+                >
                   <option value="opcao1">Selecionar</option>
                   <option value="opcao2">Fornecedor1</option>
                   <option value="opcao2">Fornecedor2</option>
@@ -152,19 +211,36 @@ return (
             <Col xs={12} md={3}>
               <Form.Group controlId="unEstoque">
                 <Form.Label>Unidade de estoque</Form.Label>
-                <Form.Control type="text" placeholder="Digite aqui" />
+                <Form.Control as="select" placeholder="Fornecedor" 
+                name="unEstoque"
+                value={formData.unEstoque}
+                onChange={handleChange}
+                >
+                  <option value="opcao1">Selecionar</option>
+                  <option value="opcao2">KG</option>
+                  <option value="opcao2">UN</option>
+              </Form.Control>
               </Form.Group>
+
             </Col>
             <Col xs={12} md={3}>
               <Form.Group controlId="precoCustoVenda">
                 <Form.Label>Preço custo/venda</Form.Label>
-                <Form.Control type="text" placeholder="Digite aqui" />
+                <Form.Control type="number" placeholder="Digite aqui" 
+                   name="precoCustoVenda"
+                   value={formData.precoCustoVenda}
+                   onChange={handleChange}
+                />
               </Form.Group>
             </Col>
             <Col xs={12} md={3}>
               <Form.Group controlId="limite">
                 <Form.Label>Limite do estoque</Form.Label>
-                <Form.Control type="text" placeholder="Limite do produto no estoque" />
+                <Form.Control type="number" placeholder="Limite do produto no estoque" 
+                     name="limite"
+                     value={formData.limite}
+                     onChange={handleChange}
+                />
               </Form.Group>
             </Col>
           </Row>
