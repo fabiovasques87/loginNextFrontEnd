@@ -282,6 +282,16 @@ return (
                 />
               </Form.Group>
             </Col>
+            <Col xs={12} md={3}>
+              <Form.Group controlId="limite">
+                <Form.Label>Data de vencimento</Form.Label><span>*</span>
+                <Form.Control type="number" placeholder="Limite do produto no estoque" 
+                     name="limite"
+                     value={formData.limite}
+                     onChange={handleChange}
+                />
+              </Form.Group>
+            </Col>
           </Row>
           <div className={styles.btn}>
             <Button className='btn btn-success' onClick={ondleCad}> Cadastrar</Button>
