@@ -12,4 +12,12 @@ type Usuario = {
 };
   
 
-  
+export interface FormData {
+  codigo: string;
+  produto: string;
+  descricao: string;
+  fornecedor: string;
+  unEstoque: string;
+  precoCustoVenda: number;
+  limite: number;
+}

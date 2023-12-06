@@ -31,7 +31,14 @@ function NavBar() {
           >
             <Nav.Link href="/dashboard" className={styles.container} style={{ color: '#FFF' }} >Home</Nav.Link>
 
-            <Nav.Link href="/cadastro"  className={styles.container} style={{ color: '#FFF' }}>Cadastrar usuários</Nav.Link>
+            {/* <Nav.Link href="/cadastro"  className={styles.container} style={{ color: '#FFF' }}>Cadastrar usuários</Nav.Link> */}
+
+            <NavDropdown  title="Cadastrar" style={{color: 'red'}} id="navbarScrollingDropdown">
+              <NavDropdown.Item href="/cadastro" >Usuários</NavDropdown.Item>
+              <NavDropdown.Item href="/fornecedor" >Fornecedor</NavDropdown.Item>
+
+            </NavDropdown>
+
             <NavDropdown  title="Produtos" style={{color: 'red'}} id="navbarScrollingDropdown">
               <NavDropdown.Item href="/adicionar" >Adicionar</NavDropdown.Item>
             </NavDropdown>
