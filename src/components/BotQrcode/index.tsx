@@ -7,6 +7,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const BotQrcode = () => {
     return (
-        <button className={styles.BotProd}><FontAwesomeIcon icon={faQrcode} /> Gerar qrcode</button>
+        <button className={styles.BotQrcode}><FontAwesomeIcon icon={faQrcode} /> Gerar qrcode</button>
     )
 }

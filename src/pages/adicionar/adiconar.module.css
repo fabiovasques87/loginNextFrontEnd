@@ -48,4 +48,26 @@
     .btn Button{
         width: 100%;
     }
+    .botGeradores{
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+            width: 100%;
+    }
+    .botGeradores button{
+        width: 100%;
+        margin-bottom:10px
+    }
+    .BotQrCode{
+        width: 100%;
+    }
+
+    .BotCodBarras{
+        width: 100%;
+        margin:0px
+    }
+
+
+
+
 }

@@ -1,9 +1,18 @@
 
-.BotProd{
+.BotQrcode{
    border: none;
    padding: 10px;
 }
 
-.BotProd:hover{
+.BotQrcode:hover{
         background-color: #CCC;
     }
+
+
+
+
+
+    @media(max-width:760px){
+
+   
+  }
