@@ -21,12 +21,18 @@ import { BotForm } from '@/components/BotForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
-import { BotProd } from '@/components/BotProd';
+
+// importe de botões
+import { BotQrcode } from '@/components/BotQrcode';
+import { BotCodBarras } from '@/components/BotCodBarras';
+
 
 
 const index = () => {
 
-  const [tooltipText, setTooltipText] = useState('Gere codigo interno, caso seu produto não possua um');
+  const [tooltipCodBarras, settooltipCodBarras] = useState('Gere codigo de barras aqui');
+  const [tooltipQrCode, settooltipQrCode] = useState('Gere codigo Qrcode aqui');
+
 
   const router = useRouter();
   const [contentVisible, setContentVisible] = useState(false);
@@ -215,26 +221,32 @@ return (
                 // Renderize seu conteúdo sensível apenas se o usuário for um administrador
                 <div className={styles.formAddProd}>
        
+                 
+                    <div className={styles.botGeradores}>  
+                   
+                         <OverlayTrigger
+                            placement="top"
+                            overlay={<Tooltip id="tooltip">{tooltipQrCode}</Tooltip>}
+                          >  
+
+                               <div className={styles.BotQrCode}> <BotQrcode /> </div>
+
+                         </OverlayTrigger>
+
+
+                            <OverlayTrigger
+                            placement="top"
+                            overlay={<Tooltip id="tooltip">{tooltipCodBarras}</Tooltip>}
+                          >  
+                            <div className={styles.BotCodBarras}><BotCodBarras /></div>
+                        </OverlayTrigger>
+
+                      </div>
+
 
           <Form>
       <Row>
-      <Col xs={12} md={3}>
-              <Form.Label>Código interno</Form.Label><span></span>
-              <InputGroup className="mb-3">   
-                  <OverlayTrigger
-                      placement="top"
-                      overlay={<Tooltip id="tooltip">{tooltipText}</Tooltip>}
-                    >      
-                      <Form.Control readOnly type='text'
-                        placeholder="" className={styles.input}  
-                                                        
-                      />
-                  </OverlayTrigger>
-
-                      <BotProd />
-                </InputGroup>
-                
-              </Col>
+            
           <Col xs={12} md={3}>
             <Form.Group controlId="codigo">
                  
@@ -256,7 +268,7 @@ return (
           />
             </Form.Group>
           </Col>
-          <Col xs={12} md={3}>
+          <Col xs={12} md={6}>
             <Form.Group controlId="descricao">
               <Form.Label>descricao</Form.Label><span>*</span>
               <Form.Control className={styles.input} as="textarea" placeholder="descricao" 
