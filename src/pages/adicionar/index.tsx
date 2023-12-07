@@ -12,7 +12,7 @@ import ModalGeral from '@/components/modal/ModalGeral';
 import { Header } from '@/components/Header';
 
 
-import { Form, Row, Col, Button, Table, InputGroup, Tooltip} from 'react-bootstrap';
+import { Form, Row, Col, Button, Table, InputGroup, Tooltip, OverlayTrigger} from 'react-bootstrap';
 
 import styles from './adiconar.module.css';
 import { BotForm } from '@/components/BotForm';
@@ -26,7 +26,7 @@ import { BotProd } from '@/components/BotProd';
 
 const index = () => {
 
-  const [tooltipText, setTooltipText] = useState('This is a tooltip');
+  const [tooltipText, setTooltipText] = useState('Gere codigo interno, caso seu produto não possua um');
 
   const router = useRouter();
   const [contentVisible, setContentVisible] = useState(false);
@@ -220,15 +220,24 @@ return (
       <Row>
       <Col xs={12} md={3}>
               <Form.Label>Código interno</Form.Label><span></span>
-              <InputGroup className="mb-3">
-                  <Form.Control readOnly type='text'
-                    placeholder="" className={styles.input}                                  
-                  />
-                  <BotProd />
+              <InputGroup className="mb-3">   
+                  <OverlayTrigger
+                      placement="top"
+                      overlay={<Tooltip id="tooltip">{tooltipText}</Tooltip>}
+                    >      
+                      <Form.Control readOnly type='text'
+                        placeholder="" className={styles.input}  
+                                                        
+                      />
+                  </OverlayTrigger>
+
+                      <BotProd />
                 </InputGroup>
+                
               </Col>
           <Col xs={12} md={3}>
             <Form.Group controlId="codigo">
+                 
               <Form.Label>Codigo de barras</Form.Label><span>*</span>
               <Form.Control className={styles.input} type="text" placeholder="Código de barras" 
               name="codigo"
