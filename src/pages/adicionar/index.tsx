@@ -12,7 +12,7 @@ import ModalGeral from '@/components/modal/ModalGeral';
 import { Header } from '@/components/Header';
 
 
-import { Form, Row, Col, Button, Table, InputGroup} from 'react-bootstrap';
+import { Form, Row, Col, Button, Table, InputGroup, Tooltip} from 'react-bootstrap';
 
 import styles from './adiconar.module.css';
 import { BotForm } from '@/components/BotForm';
@@ -26,6 +26,7 @@ import { BotProd } from '@/components/BotProd';
 
 const index = () => {
 
+  const [tooltipText, setTooltipText] = useState('This is a tooltip');
 
   const router = useRouter();
   const [contentVisible, setContentVisible] = useState(false);
@@ -85,6 +86,10 @@ const index = () => {
     unEstoque: '',
     precoCustoVenda: '',
     limite: '',
+    dataVencimento:'',
+    qtdRecebida: '',
+    marcaProd:'',
+    departamento:'',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -101,30 +106,42 @@ const index = () => {
     const errorMessages: string[] = [];
 
     if(!formData.codigo){
-      errorMessages.push('favor preencher o campo codigo de barras.');
+      errorMessages.push('Preencha o campo codigo de barras.');
     }
     
     if(!formData.produto){
-      errorMessages.push('favor preencher o campo produto.');
+      errorMessages.push('Preencha o campo produto.');
     }
     if(!formData.descricao){
-      errorMessages.push('favor preencher o campo descição.');
+      errorMessages.push('Preencha o campo descição.');
     }
 
     if(!formData.fornecedor){
-      errorMessages.push('favor preencher o campo o fornecedor.');
+      errorMessages.push('Preencha o campo o fornecedor.');
     }
 
     if(!formData.unEstoque){
-      errorMessages.push('favor preencher o campo com a unidade de estoque.');
+      errorMessages.push('Preencha o campo com a unidade de estoque.');
     }
 
     if(!formData.precoCustoVenda){
-      errorMessages.push('favor preencher o campo o preço de custo/venda');
+      errorMessages.push('Preencha o campo o preço de custo/venda');
     }
     
     if(!formData.limite){
-      errorMessages.push('favor preencher o campo o limite do estoque');
+      errorMessages.push('Preencha o campo o limite do estoque');
+    }
+    if(!formData.dataVencimento){
+      errorMessages.push('Preencha o campo o limite do estoque');
+    }
+    if(!formData.qtdRecebida){
+      errorMessages.push('Preencha o campo o limite do estoque');
+    }
+    if(!formData.marcaProd){
+      errorMessages.push('Preencha o campo o limite do estoque');
+    }
+    if(!formData.departamento){
+      errorMessages.push('Preencha o campo o limite do estoque');
     }
 
     if (errorMessages.length > 0) {
@@ -201,6 +218,15 @@ return (
 
           <Form>
       <Row>
+      <Col xs={12} md={3}>
+              <Form.Label>Código interno</Form.Label><span></span>
+              <InputGroup className="mb-3">
+                  <Form.Control readOnly type='text'
+                    placeholder="" className={styles.input}                                  
+                  />
+                  <BotProd />
+                </InputGroup>
+              </Col>
           <Col xs={12} md={3}>
             <Form.Group controlId="codigo">
               <Form.Label>Codigo de barras</Form.Label><span>*</span>
@@ -211,15 +237,6 @@ return (
           />
             </Form.Group>
           </Col>
-          <Col xs={12} md={3}>
-              <Form.Label>Gerar Código interno</Form.Label><span>*</span>
-              <InputGroup className="mb-3">
-                  <Form.Control readOnly type='text'
-                    placeholder="" className={styles.input}                                  
-                  />
-                  <BotProd />
-                </InputGroup>
-              </Col>
           <Col xs={12} md={3}>
             <Form.Group controlId="produto">
               <Form.Label>Produto</Form.Label><span>*</span>
@@ -242,6 +259,36 @@ return (
           </Col>
         </Row>
             <Row>
+            <Col xs={12} md={3}>
+              <Form.Group controlId="marcaProd">
+                <Form.Label>Marca do produto</Form.Label><span>*</span>
+                <Form.Control className={styles.input} type="text" placeholder="quantidade recebida" 
+                     name="marcaProd"
+                     value={formData.marcaProd}
+                     onChange={handleChange}
+                />
+              </Form.Group>
+            </Col>
+            <Col xs={12} md={3}>
+              <Form.Group controlId="departamento">
+                <Form.Label>Departamento</Form.Label><span>*</span>
+                <Form.Control className={styles.input} type="text" placeholder="departamento" 
+                     name="departamento"
+                     value={formData.departamento}
+                     onChange={handleChange}
+                />
+              </Form.Group>
+            </Col>
+            <Col xs={12} md={3}>
+              <Form.Group controlId="qtdRecebida">
+                <Form.Label>quantidade recebida</Form.Label><span>*</span>
+                <Form.Control className={styles.input} type="number" placeholder="quantidade recebida" 
+                     name="qtdRecebida"
+                     value={formData.qtdRecebida}
+                     onChange={handleChange}
+                />
+              </Form.Group>
+            </Col>   
               <Col xs={12} md={3}>
               <Form.Group controlId="fornecedor">
                 <Form.Label>Fornecedor</Form.Label><span>*</span>
@@ -294,15 +341,16 @@ return (
               </Form.Group>
             </Col>
             <Col xs={12} md={3}>
-              <Form.Group controlId="limite">
-                <Form.Label>Data de vencimento</Form.Label><span>*</span>
-                <Form.Control className={styles.input} type="number" placeholder="Limite do produto no estoque" 
-                     name="limite"
-                     value={formData.limite}
+              <Form.Group controlId="dataVencimento">
+                <Form.Label>Data de vencimento do produto</Form.Label><span>*</span>
+                <Form.Control className={styles.input} type="date" 
+                     name="dataVencimento"
+                     value={formData.dataVencimento}
                      onChange={handleChange}
                 />
               </Form.Group>
             </Col>
+                   
              
           </Row>
           <div className={styles.btn}>
